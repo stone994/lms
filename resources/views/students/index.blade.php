@@ -3,7 +3,7 @@
 @section('content')
 <main class="flex-1 p-6 overflow-y-auto space-y-6">
     <div class="mb-3">
-        <a href="{{ route('student.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New student</a>
+        <a href="{{ route('students.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New student</a>
        
     </div>
 
@@ -29,15 +29,15 @@
                 </tr>
             </thead>
             <tbody class="divide-y text-sm">
-                @foreach($student as $student)
+                @foreach($students as $student)
                 <tr>
                     <td class="p-3 font-semibold">{{ $student->id }}</td>
                     <td class="p-3 font-mono text-blue-600">{{ $student->lms_account }}</td>
                     <td class="p-3 font-semibold">{{ $student->name }}</td>
                     <td class="p-3 font-semibold">{{ $student->email }}</td>
                     <td class="p-3 font-semibold">{{ $student->cnic }}</td>
-                    <td><a href="{{ route('student.edit',$student->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                    <td><a href="{{ route('student.destroy',$student->id) }}" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Delete</a></td>   
+                    <td><a href="{{ route('students.edit',$student->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
+                    <td><a href="{{ route('students.destroy',$student->id) }}" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Delete</a></td>   
                 </tr>
                 @endforeach
             </tbody>

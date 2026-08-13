@@ -6,7 +6,6 @@
     <title>LMS Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="@vite(['resources/css/app.css', 'resources/js/app.js'])">
 </head>
 <body class="bg-gray-100 font-sans antialiased">
 
@@ -17,22 +16,22 @@
                    
                     <span>Home</span>
                 </a>
-                <a href="{{ route('program.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
+                <a href="{{ route('programs.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
                     
                     <span>Program</span>
                 </a>
-                <a href="{{ route('subject.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
+                <a href="{{ route('subjects.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
                   
                     <span>Subject</span>
                 </a>
-                <a href="{{ route('teacher.index') }}" class="flex items-center justify-between px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
+                <a href="{{ route('teachers.index') }}" class="flex items-center justify-between px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
                     <div class="flex items-center space-x-3">
                        
                         <span>Teacher</span>
                     </div>
                    
                 </a>
-                <a href="{{ route('student.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
+                <a href="{{ route('students.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
                     
                     <span>Student</span>
                 </a>

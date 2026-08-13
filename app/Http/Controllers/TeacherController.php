@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeacherRequest;
 use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Student;
@@ -16,8 +17,8 @@ class TeacherController extends Controller
      */
     public function index()
     {
-         $teacher=Teacher::all();
-        return view('teacher.index',compact('teacher'));
+         $teachers=Teacher::all();
+        return view('teachers.index',compact('teachers'));
 
     }
 
@@ -26,23 +27,16 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        return view('teacher.create');
+        return view('teachers.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TeacherRequest $request)
     {
-        $validated=$request->validate([
-            'name'=>'required|string|max:255',
-            'email'=>'required|email',
-            'phone'=>'required|string|max:11',
-            'department'=>'required|string|max:255',
-            'education'=>'required|string|max:255',
-        ]);
-        Teacher::create($validated);
-        return redirect()->route('teacher.index')->with('success','teacher create successfullt');
+        
+        return redirect()->route('teachers.index')->with('success','teacher create successfullt');
     }
 
     /**
@@ -58,26 +52,20 @@ class TeacherController extends Controller
      */
     public function edit(string $id)
     {
-        $teacher=Teacher::findOrFail($id);
-        return view('teacher.edit',compact('teacher'));
+        $teachers=Teacher::findOrFail($id);
+        return view('teachers.edit',compact('teachers'));
         
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TeacherRequest $request, string $id)
     {
-        $validated=$request->validate([
-            'name'=>'required|string|max:255',
-            'email'=>'required|email',
-            'phone'=>'required|string|max:11',
-            'department'=>'required|string|max:255',
-            'education'=>'required|string|max:255',
-        ]);
+       
         $teacher=Teacher::findOrFail($id);
-        $teacher->update($validated);
-        return redirect()->route('teacher.index')->with('success','teacher create successfullt');
+        $teacher->update($request);
+        return redirect()->route('teachers.index')->with('success','teacher create successfullt');
     }
 
     /**

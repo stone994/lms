@@ -4,7 +4,7 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Faculty Member</h2>
-        <form action="{{ route('student.update',$student->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('students.update',$student->id) }}" method="POST" class="space-y-4">
             @csrf
             @method('PUT')
             <div>
@@ -25,7 +25,7 @@
             </div>
             </div>
             <div class="flex justify-end space-x-2 pt-2">
-                <a href="{{ route('teacher.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
+                <a href="{{ route('teachers.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
                 <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm">Save Teacher</button>
             </div>
         </form>

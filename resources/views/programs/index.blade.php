@@ -3,7 +3,7 @@
 @section('content')
 <main class="flex-1 p-6 overflow-y-auto space-y-6">
     <div class="mb-3">
-        <a href="{{ route('program.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Add New Program</a>
+        <a href="{{ route('programs.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Add New Program</a>
         
     </div>
 
@@ -30,15 +30,15 @@
                 </tr>
             </thead>
             <tbody class="divide-y text-sm">
-                @foreach($program as $program)
+                @foreach($programs as $program)
                 <tr>
                     <td class="p-3 font-semibold">{{ $program->id }}</td>
                     <td class="p-3 font-mono text-blue-600">{{ $program->name }}</td>
                     <td class="p-3 font-semibold">{{ $program->program_code }}</td>
                     <td class="p-3 font-semibold">{{ $program->duration }}</td>  
-                    <td><a href="{{ route('program.edit',$program->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
+                    <td><a href="{{ route('programs.edit',$program->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                    <td class="p-3">
-        <form action="{{ route('program.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
+        <form action="{{ route('programs.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
             @csrf
             @method('DELETE')
             <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">

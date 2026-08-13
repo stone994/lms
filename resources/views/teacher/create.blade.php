@@ -4,7 +4,7 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Faculty Member</h2>
-        <form action="{{ route('teacher.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('teachers.store') }}" method="POST" class="space-y-4">
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -27,7 +27,7 @@
                 <input type="text" name="education" required placeholder="MSCS" class="w-full border p-2 rounded-lg mt-1">
             </div>
             <div class="flex justify-end space-x-2 pt-2">
-                <a href="{{ route('teacher.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
+                <a href="{{ route('teachers.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
                 <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm">Save Teacher</button>
             </div>
         </form>

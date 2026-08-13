@@ -3,7 +3,7 @@
 @section('content')
 <main class="flex-1 p-6 overflow-y-auto space-y-6">
     <div class="mb-3">
-        <a href="{{ route('subject.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New Subject</a>
+        <a href="{{ route('subjects.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New Subject</a>
        
     </div>
 
@@ -28,14 +28,14 @@
                 </tr>
             </thead>
             <tbody class="divide-y text-sm">
-                @foreach($subject as $subject)
+                @foreach($subjects as $subject)
                 <tr>
                     <td class="p-3 font-semibold">{{ $subject->id }}</td>
                     <td class="p-3 font-mono text-blue-600">{{ $subject->name }}</td>
                     <td class="p-3 font-semibold">{{ $subject->code }}</td>
                     <td class="p-3 font-semibold">{{ $subject->credit_hour }}</td>
-                    <td><a href="{{ route('subject.edit',$subject->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                    <td><a href="{{ route('subject.destroy',$subject->id) }}" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Delete</a></td>   
+                    <td><a href="{{ route('subjects.edit',$subject->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
+                    <td><a href="{{ route('subjects.destroy',$subject->id) }}" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Delete</a></td>   
                 </tr>
                 @endforeach
             </tbody>

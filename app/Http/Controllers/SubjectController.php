@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubjectProgram;
 use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Student;
@@ -14,8 +15,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-         $subject=Subject::all();
-        return view('subject.index',compact('subject'));
+         $subjects=Subject::all();
+        return view('subjects.index',compact('subjects'));
     }
 
     /**
@@ -23,21 +24,16 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        return view('subject.create');
+        return view('subjects.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubjectProgram $request)
     {
-          $validated=$request->validate([
-            'name'=>'required|string|max:255',
-            'code'=>'required|string',
-            'credit_hour'=>'required|integer|min:1|max:6',
-          ]);
-          Subject::create($validated);
-          return redirect()->route('subject.index')->with('success','program created successfully');
+        
+          return redirect()->route('subjects.index')->with('success','program created successfully');
 
 
     }
@@ -55,23 +51,19 @@ class SubjectController extends Controller
      */
     public function edit(string $id)
     {
-        $subject=Subject::findOrFail($id);
-        return view('subject.edit',compact('subject'));
+        $subjects=Subject::findOrFail($id);
+        return view('subjects.edit',compact('subjects'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SubjectProgram $request, string $id)
     {
-        $validated=$request->validate([
-            'name'=>'required|string|max:255',
-            'code'=>'required|string',
-            'credit_hour'=>'required|integer|min:1|max:6',
-          ]);
+        
            $subject = Subject::findOrFail($id);
-        $subject->update($validated);
-          return redirect()->route('subject.index')->with('success','program created successfully');
+        $subject->update($request);
+          return redirect()->route('subjects.index')->with('success','program created successfully');
     }
 
     /**

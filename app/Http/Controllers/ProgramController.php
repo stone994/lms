@@ -7,6 +7,7 @@ use App\Models\Program;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
+use App\Http\Requests\ProgramRequest;
 class ProgramController extends Controller
 {
     /**
@@ -14,8 +15,8 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $program=Program::all();
-        return view('program.index',compact('program'));
+        $programs=Program::all();
+        return view('programs.index',compact('programs'));
 
     }
 
@@ -30,14 +31,9 @@ class ProgramController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProgramRequest $request)
     {
-       $validated= $request->validate([
-            'name'=>'required|string|max:255',
-            'program_code'=>'required|string',
-            'duration'=>'required|integer|min:1|max:5',
-        ]);
-        Program::create($validated);
+       
         return redirect()->route('program.index')->with('success','program created successfully');
     }
 
@@ -55,24 +51,18 @@ class ProgramController extends Controller
     public function edit(string $id)
     {
         $program = Program::findOrFail($id);
-        return view('program.edit',compact('program'));
+        return view('programs.edit',compact('programs'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProgramRequest $request, string $id)
     {
-         $request->validate([
-            'name'=>'required|string|max:255',
-            'program_code'=>'required|string',
-            'duration'=>'required|integer|min:1|max:5',
-        ]);
-
-        
+         
         $program = Program::findOrFail($id);
         $program->update($request);
-        return redirect()->route('program.index')->with('success','program update successfully');
+        return redirect()->route('programs.index')->with('success','program update successfully');
     }
 
     /**

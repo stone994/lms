@@ -4,7 +4,7 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Student</h2>
-        <form action="{{ route('student.store') }}" method="POST" class="space-y-4">
+        <form action="{{ route('students.store') }}" method="POST" class="space-y-4">
             @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700">Lms Account</label>
@@ -24,7 +24,7 @@
             </div>
            
             <div class="flex justify-end space-x-2 pt-2">
-                <a href="{{ route('student.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
+                <a href="{{ route('students.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
                 <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm">Save student</button>
             </div>
         </form>

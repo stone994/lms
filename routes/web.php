@@ -6,11 +6,9 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 
-Route::get('/', function () {
-    return view('layout/welcome');
-});
+Route::get('/', [ProgramController::class, 'index']);
 
-Route::resource('program',ProgramController::class);
-Route::resource('subject',subjectController::class);
-Route::resource('teacher',TeacherController::class);
-Route::resource('student',StudentController::class);
+Route::resource('programs',ProgramController::class);
+Route::resource('subjects',SubjectController::class);
+Route::resource('teachers',TeacherController::class);
+Route::resource('students',StudentController::class);

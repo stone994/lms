@@ -3,7 +3,7 @@
 @section('content')
 <main class="flex-1 p-6 overflow-y-auto space-y-6">
     <div class="mb-3">
-        <a href="{{ route('teacher.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New Teacher</a>
+        <a href="{{ route('teachers.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New Teacher</a>
        
     </div>
 
@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y text-sm">
-                @foreach($teacher as $teacher)
+                @foreach($teachers as $teacher)
                 <tr>
                     <td class="p-3 font-semibold">{{ $teacher->id }}</td>
                     <td class="p-3 font-mono text-blue-600">{{ $teacher->name }}</td>
@@ -38,9 +38,9 @@
                     <td class="p-3 font-semibold">{{ $teacher->phone }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->department }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->education }}</td>
-                    <td><a href="{{ route('teacher.edit',$teacher->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
+                    <td><a href="{{ route('teachers.edit',$teacher->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                     <td class="p-3">
-        <form action="{{ route('teacher.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
+        <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
             @csrf
             @method('DELETE')
             <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
