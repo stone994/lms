@@ -37,8 +37,17 @@
                     <td class="p-3 font-semibold">{{ $student->email }}</td>
                     <td class="p-3 font-semibold">{{ $student->cnic }}</td>
                     <td><a href="{{ route('students.edit',$student->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                    <td><a href="{{ route('students.destroy',$student->id) }}" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Delete</a></td>   
+                     <td class="p-3">
+                            <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>     
                 </tr>
+                
                 @endforeach
             </tbody>
         </table>

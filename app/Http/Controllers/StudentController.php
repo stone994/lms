@@ -26,8 +26,8 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        
-        return redirect()->route('student.index')->with('success', 'Student added successfully!');
+        Student::create($request->validated());
+        return redirect()->route('students.index')->with('success', 'Student added successfully!');
     }
 
     public function edit(string $id)

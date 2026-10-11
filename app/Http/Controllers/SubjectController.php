@@ -32,8 +32,8 @@ class SubjectController extends Controller
      */
     public function store(SubjectProgram $request)
     {
-        
-          return redirect()->route('subjects.index')->with('success','program created successfully');
+        Subject::create($request->validated());
+        return redirect()->route('subjects.index')->with('success','program created successfully');
 
 
     }
@@ -43,7 +43,8 @@ class SubjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $subject = Subject::findOrFail($id);
+        return view('subjects.show', compact('subject'));
     }
 
     /**
@@ -62,7 +63,7 @@ class SubjectController extends Controller
     {
         
            $subject = Subject::findOrFail($id);
-        $subject->update($request);
+          $subject->update($request->validated());
           return redirect()->route('subjects.index')->with('success','program created successfully');
     }
 
@@ -71,6 +72,9 @@ class SubjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $subject = Subject::findOrFail($id);
+        $subject->delete();
+
+        return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully.');
     }
 }

@@ -23,6 +23,7 @@
                     <th class="p-3">Name</th>
                     <th class="p-3">Program Code</th>
                     <th class="p-3">Duration</th>
+                    <th class="py-3 px-2">Subjects</th>
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
 
@@ -35,17 +36,28 @@
                     <td class="p-3 font-semibold">{{ $program->id }}</td>
                     <td class="p-3 font-mono text-blue-600">{{ $program->name }}</td>
                     <td class="p-3 font-semibold">{{ $program->program_code }}</td>
-                    <td class="p-3 font-semibold">{{ $program->duration }}</td>  
+                    <td class="p-3 font-semibold">{{ $program->duration }}</td> 
+                    
+                    <td class="py-3 px-2">
+                        @forelse($program->subjects as $subject)
+                            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">
+                                {{ $subject->name }} ({{ $subject->course }})
+                            </span>
+                        @empty
+                            <span class="text-xs text-gray-400">No subjects linked</span>
+                        @endforelse
+                    </td>
+                    
                     <td><a href="{{ route('programs.edit',$program->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                    <td class="p-3">
-        <form action="{{ route('programs.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
-                Delete
-            </button>
-        </form>
-    </td> 
+                            <form action="{{ route('programs.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>   
 
                 </tr>
                 @endforeach

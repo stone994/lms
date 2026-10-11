@@ -16,6 +16,7 @@ class ProgramController extends Controller
     public function index()
     {
         $programs=Program::all();
+        $programs = Program::with('subjects')->get();
         return view('programs.index',compact('programs'));
 
     }
@@ -25,7 +26,8 @@ class ProgramController extends Controller
      */
     public function create()
     {
-        return view('program.create');
+        $subjects = Subject::all();
+        return view('programs.create',compact('subjects'));
     }
 
     /**
@@ -33,8 +35,8 @@ class ProgramController extends Controller
      */
     public function store(ProgramRequest $request)
     {
-       
-        return redirect()->route('program.index')->with('success','program created successfully');
+        Program::create($request->validated());
+        return redirect()->route('programs.index')->with('success','program created successfully');
     }
 
     /**
@@ -51,7 +53,7 @@ class ProgramController extends Controller
     public function edit(string $id)
     {
         $program = Program::findOrFail($id);
-        return view('programs.edit',compact('programs'));
+        return view('programs.edit',compact('program'));
     }
 
     /**
@@ -68,8 +70,11 @@ class ProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+     public function destroy(string $id)
     {
-        
+        $program = Program::findOrFail($id);
+        $program->delete();
+
+        return redirect()->route('programs.index')->with('success', 'program deleted successfully.');
     }
 }

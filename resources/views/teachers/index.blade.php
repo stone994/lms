@@ -39,15 +39,15 @@
                     <td class="p-3 font-semibold">{{ $teacher->department }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->education }}</td>
                     <td><a href="{{ route('teachers.edit',$teacher->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                    <td class="p-3">
-        <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Delete this program?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
-                Delete
-            </button>
-        </form>
-    </td> 
+                  <td class="p-3">
+                            <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
+                                    Delete
+                                </button>
+                            </form>
+                        </td> 
                 </tr>
                 @endforeach
             </tbody>

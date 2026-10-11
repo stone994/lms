@@ -20,10 +20,12 @@ class SubjectProgram extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            //
-        ];
-    }
+  public function rules(): array
+{
+    return [
+        'name' => 'required|string|max:255',
+        'code' => 'required|string|max:50',
+        'credit_hour' => 'required|integer',
+    ];
+}
 }

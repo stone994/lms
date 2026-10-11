@@ -35,7 +35,7 @@ class TeacherController extends Controller
      */
     public function store(TeacherRequest $request)
     {
-        
+        Teacher::create($request->validated());
         return redirect()->route('teachers.index')->with('success','teacher create successfullt');
     }
 
@@ -71,8 +71,11 @@ class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+     public function destroy(string $id)
     {
-        //
+        $teacher = Teacher::findOrFail($id);
+        $teacher->delete();
+
+        return redirect()->route('teachers.index')->with('success', 'teacher deleted successfully.');
     }
 }
