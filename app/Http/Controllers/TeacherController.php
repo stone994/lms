@@ -27,7 +27,8 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        return view('teachers.create');
+        $subjects = Subject::all();
+        return view('teachers.create', compact('subjects'));
     }
 
     /**
@@ -35,7 +36,10 @@ class TeacherController extends Controller
      */
     public function store(TeacherRequest $request)
     {
-        Teacher::create($request->validated());
+        $teacher=Teacher::create($request->validated());
+        $teacher->subjects()->sync(
+        $request->input('subject_ids', [])
+    );
         return redirect()->route('teachers.index')->with('success','teacher create successfullt');
     }
 
@@ -44,19 +48,24 @@ class TeacherController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $teacher = Teacher::with('subjects')->findOrFail($id);
+        return view('teachers.show', compact('teacher')); 
     }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $teachers=Teacher::findOrFail($id);
-        return view('teachers.edit',compact('teachers'));
-        
-    }
+    $teacher = Teacher::findOrFail($id);
+    $subjects = Subject::all();
 
+    return view('teachers.edit', [
+        'teacher' => $teacher,
+        'subjects' => $subjects,
+    ]);
+}
+    
+   
     /**
      * Update the specified resource in storage.
      */
@@ -64,10 +73,10 @@ class TeacherController extends Controller
     {
        
         $teacher=Teacher::findOrFail($id);
-        $teacher->update($request);
+        $teacher->update($request->validated());
+        $teacher->subjects()->sync($request->input('subject_ids', []));
         return redirect()->route('teachers.index')->with('success','teacher create successfullt');
     }
-
     /**
      * Remove the specified resource from storage.
      */

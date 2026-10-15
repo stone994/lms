@@ -19,18 +19,34 @@
                 <input type="number" name="duration" value="4" required class="w-full border p-2 rounded-lg mt-1">
             </div>
 
-            <!-- NAYA SECTION: Subjects Checkboxes -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Select Subjects</label>
-                <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
-                    @foreach($subjects as $subject)
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                            <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}" class="rounded text-blue-600">
-                            <span>{{ $subject->name }} ({{ $subject->course }})</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
+           <div>
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Select Subjects
+    </label>
+
+    <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
+
+        @forelse($subjects as $subject)
+            <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                <input
+                    type="checkbox"
+                    name="subject_ids[]"
+                    value="{{ $subject->id }}"
+                    class="rounded text-blue-600"
+                >
+
+                <span>
+                    {{ $subject->name }} ({{ $subject->course }})
+                </span>
+            </label>
+        @empty
+            <p class="text-red-600 text-sm">
+                No subjects found. Please add subjects first.
+            </p>
+        @endforelse
+
+    </div>
+</div>
 
             <div class="flex justify-end space-x-2 pt-2">
                 <a href="{{ route('programs.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>

@@ -50,11 +50,12 @@ class SubjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        $subjects=Subject::findOrFail($id);
-        return view('subjects.edit',compact('subjects'));
-    }
+   public function edit(string $id)
+{
+    $subject = Subject::findOrFail($id); 
+
+    return view('subjects.edit', compact('subject'));
+}
 
     /**
      * Update the specified resource in storage.

@@ -14,8 +14,10 @@ class Program extends Model
         'program_code',
         'duration',
     ];
-    public function subjects(): BelongsToMany
+ 
+
+    public function subjects()
     {
-        return $this->belongsToMany(Subject::class);
+        return $this->belongsToMany(Subject::class, 'program_subject'); 
     }
 }

@@ -25,6 +25,7 @@
                     <th class="p-3">Phone No</th>
                     <th class="p-3">department</th>
                     <th class="p-3">Education</th>
+                    <th class="py-3 px-2">Subjects</th>
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
                 </tr>
@@ -38,6 +39,15 @@
                     <td class="p-3 font-semibold">{{ $teacher->phone }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->department }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->education }}</td>
+                    <td class="py-3 px-2">
+                        @forelse($teacher->subjects as $subject)
+                            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">
+                                {{ $subject->name }} ({{ $subject->course }})
+                            </span>
+                        @empty
+                            <span class="text-xs text-gray-400">No subjects linked</span>
+                        @endforelse
+                    </td>
                     <td><a href="{{ route('teachers.edit',$teacher->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                   <td class="p-3">
                             <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
