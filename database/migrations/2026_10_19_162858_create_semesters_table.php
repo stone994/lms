@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('program_name');
             $table->integer('semester_number');
             $table->integer('total_subjects');
-            $table->string('compulsory_subjects');
-            $table->string('elective_subjects');
+            $table->string('subject_name');
+            $table->enum('type', ['Compulsory', 'Optional'])
+                  ->default('Compulsory');
             $table->timestamps();
         });
     }
@@ -25,8 +26,10 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('semesters');
-    }
+   public function down(): void
+{
+    Schema::table('semesters', function (Blueprint $table) {
+        $table->dropColumn('type');
+    });
+}
 };

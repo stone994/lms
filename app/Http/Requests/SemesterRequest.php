@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class SemesterRequest extends FormRequest
 {
@@ -26,9 +28,7 @@ class SemesterRequest extends FormRequest
         'program_name'          => ['required', 'string', 'max:255'],
         'semester_number'       => ['required', 'integer', 'min:1', 'max:8'],
         'total_subjects'        => ['required', 'integer', 'min:0'],
-
-        'compulsory_subjects'   => ['required', 'string', 'max:255'],
-
-        'elective_subjects'     => ['required', 'string', 'max:255'],
+'subject_name' => ['required','string','max:255'],
+       'type' => ['required', Rule::in(['Compulsory', 'Optional'])],
     ];
 }}

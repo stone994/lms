@@ -11,8 +11,8 @@ class Semester extends Model
         'program_name',
         'semester_number',
         'total_subjects',
-        'compulsory_subjects',
-        'elective_subjects',
+        'subject_name',
+        'type',
     ];
     
 

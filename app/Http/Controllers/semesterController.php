@@ -72,6 +72,9 @@ public function update(SemesterRequest $request, string $id)
      */
     public function destroy(string $id)
     {
-        //
+        $subject->delete();
+
+        return redirect()->route('subjects.index')
+            ->with('success', 'Subject deleted successfully.');
     }
 }

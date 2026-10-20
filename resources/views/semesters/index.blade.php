@@ -23,8 +23,9 @@
                     <th class="p-3">Program Name</th>
                     <th class="p-3">Semester</th>
                     <th class="p-3">Total Subjects</th>
-                    <th class="py-3">Compulsory Subjects</th>
-                    <th class="py-3">Optional Subjects</th>
+                    <th class="p-3">Subject Name</th>
+                    <th class="py-3">Type</th>
+                    
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
 
@@ -37,9 +38,20 @@
                     <td class="p-3 font-semibold">{{ $semester->id }}</td>
                     <td class="p-3 font-semibold">{{ $semester->program_name }}</td>
                     <td class="p-3 font-semibold">{{ $semester->semester_number }}</td>
-                    <td class="p-3 font-semibold">{{ $semester->total_subjects }}</td> 
-                    <td class="p-3 font-semibold">{{ $semester->compulsory_subjects }}</td> 
-                    <td class="p-3 font-semibold">{{ $semester->elective_subjects }}</td> 
+                    <td class="p-3 font-semibold">{{ $semester->total_subjects }}</td>
+                    <td class="p-3 font-semibold">{{ $semester->subject_name }}</td>  
+                      <td class="px-3 py-2">
+                            @if($semester->type === 'Compulsory')
+                                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md text-xs font-semibold">
+                                    Compulsory
+                                </span>
+                            @else
+                                <span class="bg-orange-100 text-orange-700 px-2 py-1 rounded-md text-xs font-semibold">
+                                    Optional
+                                </span>
+                            @endif
+                        </td>
+                    
                     
                     <td><a href="{{ route('semesters.edit',$semester->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                    <td class="p-3">

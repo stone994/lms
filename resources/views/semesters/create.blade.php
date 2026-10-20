@@ -57,35 +57,19 @@
         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
     @enderror
 </div>
+ <div>
+                <label class="block text-sm font-medium text-gray-700">Subject Name</label>
+                <input type="text" name="subject_name" required placeholder="e.g. Intro To Dev OPS" class="w-full border p-2 rounded-lg mt-1">
+            </div>
                         <div>
-                            <label class="block text-sm font-bold text-red-600 mb-1">Compulsory Subjects</label>
-                            <p class="text-sm text-gray-500 mb-3">Select all compulsory subjects for this semester:</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                               @foreach($semesters as $semester)
-    <label>
-        <input type="checkbox"
-               name="compulsory_subjects[]"
-               value="{{ $semester->compulsory_subjects }}">
-        {{ $semester->compulsory_subjects }}
-    </label>
-@endforeach
-                            </div>
-                        </div>
+            <label class="block mb-2 font-medium">Subject Type</label>
+            <select name="type" class="w-full border rounded-md p-2" required>
+                <option value="Compulsory">Compulsory</option>
+                <option value="Optional">Optional</option>
+            </select>
+        </div>
 
-                        <div>
-                            <label class="block text-sm font-bold text-cyan-600 mb-1">Optional / Elective Subjects</label>
-                            <p class="text-sm text-gray-500 mb-3">Select all optional subjects for this semester:</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                @foreach($semesters as $semester)
-    <label>
-        <input type="checkbox"
-               name="elective_subjects[]"
-               value="{{ $semester->elective_subjects }}">
-        {{ $semester->elective_subjects }}
-    </label>
-@endforeach
-                            </div>
-                        </div>
+                        
 
                     </div>
                     

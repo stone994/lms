@@ -72,25 +72,19 @@
             @enderror
         </div>
 
-        {{-- Compulsory Subjects --}}
-        <div>
-            <label class="block text-sm font-medium text-red-600">
-                Compulsory Subjects
-            </label>
+         <div>
+            <label class="block mb-2 font-medium">Subject Type</label>
+            <select name="type" class="w-full border rounded-md p-2" required>
+                <option value="Compulsory"
+                    {{ old('type', $semester->type) === 'Compulsory' ? 'selected' : '' }}>
+                    Compulsory
+                </option>
 
-        
-
-            <div id="compulsory-container" class="space-y-2 mt-2">
-@foreach($semesters as $semester)
-    <label class="flex items-center gap-2">
-        <input type="checkbox" name="compulsory_subjects[]" value="{{ $semester }}"
-               {{ in_array($semester, old('compulsory_subjects', $semester->compulsory_subjects ?? [])) ? 'checked' : '' }}>
-        {{ $subject }}
-    </label>
-@endforeach
-
-            </div>
-
+                <option value="Optional"
+                    {{ old('type', $semester->type) === 'Optional' ? 'selected' : '' }}>
+                    Optional
+                </option>
+            </select>
         </div>
 
         <div>
@@ -100,22 +94,7 @@
 
          
 
-            <div id="elective-container" class="space-y-2 mt-2">
-
-                @forelse($elective as $subject)
-                    <input type="text"
-                           name="elective_subjects[]"
-                           value="{{ $subject }}"
-                           class="w-full border p-2 rounded-lg"
-                           placeholder="Enter elective subject">
-                @empty
-                    <input type="text"
-                           name="elective_subjects[]"
-                           class="w-full border p-2 rounded-lg"
-                           placeholder="Enter elective subject">
-                @endforelse
-
-            </div>
+          
 
            
         </div>
