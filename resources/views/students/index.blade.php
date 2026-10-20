@@ -1,11 +1,12 @@
 @extends('layout.welcome') 
 
 @section('content')
-<main class="flex-1 p-6 overflow-y-auto space-y-6">
-    <div class="mb-3">
-        <a href="{{ route('students.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Add New student</a>
-       
-    </div>
+<div class="container-fluid pt-4">
+   <div class="flex justify-between items-center mb-3 ml-3">
+        <h2 class="text-2xl font-bold">Student Management</h2>
+        <a href="{{ route('students.create') }}" class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors">
+            <i class="fas fa-plus mr-2"></i> Add New Student
+        </a></div>
 
     @if(session('status'))
         <div class="alert alert-success mb-4">
@@ -13,11 +14,10 @@
         </div>
     @endif
 
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div class="max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-sm">
-            <h2 class="text-xl font-bold mb-4">Student List</h2>
-            <table class="w-full text-left border-collapse">
-            <thead>
+   <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+    <div class="p-0">
+        <table class="w-full border-collapse border border-gray-200 mb-0">
+            <thead class="bg-gray-800 text-white">
                 <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
                     <th class="p-3">ID</th>
                     <th class="p-3">Lms Account</th>
@@ -52,5 +52,5 @@
             </tbody>
         </table>
     </div> </div>
-</main>
+</div>
 @endsection

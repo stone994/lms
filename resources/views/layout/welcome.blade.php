@@ -35,16 +35,21 @@
                     
                     <span>Student</span>
                 </a>
+
+                <a href="{{ route('semesters.index') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md hover:bg-[#252d41] hover:text-white transition">
+                    
+                    <span>Semester Management</span>
+                </a>
                 
             </nav>
         </aside>
 
         <div class="flex-1 flex flex-col overflow-hidden">
             
-            <header class="bg-[#1e73be] text-white h-16 flex items-center justify-between px-6 shadow-md shrink-0">
+            <header class="bg-blue-600 text-white h-16 flex items-center justify-between px-6 shadow-md shrink-0">
                 <div class="flex items-center space-x-3">
                     <div class="bg-white p-1 rounded shadow-sm flex items-center justify-center">
-                        <span class="text-[#1e73be] font-black text-xl px-1">LMS</span>
+                        <span class="bg-blue-600 font-black text-xl px-1">LMS</span>
                     </div>
                     <h1 class="text-xl font-semibold tracking-wide hidden sm:block">Learning Management System</h1>
                 </div>
