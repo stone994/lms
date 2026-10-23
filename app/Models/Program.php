@@ -14,7 +14,6 @@ class Program extends Model
         'program_code',
         'duration',
     ];
- 
 
     public function subjects()
     {

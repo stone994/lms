@@ -46,7 +46,7 @@
                 No subjects found. Please add subjects first.
             </p>
         @endforelse
-
+        </div>
     </div>
             <div class="flex justify-end space-x-2 pt-2">
                 <a href="{{ route('teachers.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>

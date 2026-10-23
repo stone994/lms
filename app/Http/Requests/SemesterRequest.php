@@ -25,10 +25,10 @@ class SemesterRequest extends FormRequest
  public function rules(): array
 {
     return [
-        'program_name'          => ['required', 'string', 'max:255'],
-        'semester_number'       => ['required', 'integer', 'min:1', 'max:8'],
-        'total_subjects'        => ['required', 'integer', 'min:0'],
-'subject_name' => ['required','string','max:255'],
-       'type' => ['required', Rule::in(['Compulsory', 'Optional'])],
+       'program_name' => ['required', 'string', 'max:255'],
+            'semester_number' => ['required', 'integer', 'min:1', 'max:8'],
+            'total_subjects' => ['required', 'integer', 'min:0'],
+            'type' => ['required', Rule::in(['Compulsory', 'Optional'])],
+            
     ];
 }}

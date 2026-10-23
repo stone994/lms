@@ -13,6 +13,13 @@
 
                <form action="{{ route('semesters.store') }}" method="POST"> 
     @csrf 
+    @if ($errors->any())
+    <div style="color: red; margin-bottom: 15px;">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
     <div class="p-6 space-y-6"> 
        
 
@@ -57,10 +64,31 @@
         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
     @enderror
 </div>
- <div>
-                <label class="block text-sm font-medium text-gray-700">Subject Name</label>
-                <input type="text" name="subject_name" required placeholder="e.g. Intro To Dev OPS" class="w-full border p-2 rounded-lg mt-1">
-            </div>
+ <label class="block text-sm font-medium text-gray-700 mb-2">
+        Select Subjects
+    </label>
+    <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
+
+        @forelse($subjects as $subject)
+            <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                <input
+                    type="checkbox"
+                    name="subject_ids[]"
+                    value="{{ $subject->id }}"
+                    class="rounded text-blue-600"
+                >
+
+                <span>
+                    {{ $subject->name }} ({{ $subject->course }})
+                </span>
+            </label>
+        @empty
+            <p class="text-red-600 text-sm">
+                No subjects found. Please add subjects first.
+            </p>
+        @endforelse
+
+    </div>
                         <div>
             <label class="block mb-2 font-medium">Subject Type</label>
             <select name="type" class="w-full border rounded-md p-2" required>

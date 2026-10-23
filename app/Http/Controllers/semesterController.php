@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SemesterRequest;
 use App\Models\Semester;
+use App\Models\Program;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 class SemesterController extends Controller
 {
@@ -22,24 +26,30 @@ public function index()
      */
 public function create()
 {
-    $semesters = Semester::all();
-
-    return view('semesters.create', compact('semesters'));
+    $subjects = Subject::all();
+        return view('semesters.create', compact('subjects'));
 }
         
     /**
      * Store a newly created resource in storage.
      */
+
+  
+
+/**
+     * Store a newly created resource in storage.*/
     
-public function store(SemesterRequest $request)
+   public function store(SemesterRequest $request)
 {
-    Semester::create($request->validated());
+    $semester = Semester::create($request->validated());
+    $semester->subjects()->sync(
+        $request->input('subject_ids', [])
+    );
 
     return redirect()
         ->route('semesters.index')
-        ->with('success', 'Semester added successfully!');
-}
-    
+        ->with('status', 'Program created successfully.');
+} 
 
     /**
      * Display the specified resource.
@@ -51,13 +61,23 @@ public function store(SemesterRequest $request)
      public function edit(string $id)
 {
     $semester = Semester::findOrFail($id);
-    return view('semesters.edit', compact('semester'));
+            $subjects = Subject::all(); 
+
+    return view('semesters.edit', compact('semester', 'subjects'));
+}
+
+public function show(string $id)
+{
+    $semester = Semester::with('subjects')->findOrFail($id);
+
+    return view('semesters.show', compact('semester'));
 }
 
 public function update(SemesterRequest $request, string $id)
 {
     $semester = Semester::findOrFail($id);
     $semester->update($request->validated());
+        $semester->subjects()->sync($request->input('subject_ids', []));
 
     return redirect()
         ->route('semesters.index')
@@ -72,9 +92,10 @@ public function update(SemesterRequest $request, string $id)
      */
     public function destroy(string $id)
     {
-        $subject->delete();
+         $semester = Semester::findOrFail($id);
+        $semester->delete();
 
-        return redirect()->route('subjects.index')
+        return redirect()->route('semesters.index')
             ->with('success', 'Subject deleted successfully.');
     }
 }

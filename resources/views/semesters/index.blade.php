@@ -8,11 +8,11 @@
             <i class="fas fa-plus mr-2"></i> Add New Semester
         </a></div>
 
-    @if(session('status'))
-        <div class="alert alert-success mb-4">
-            {{ session('status') }}
-        </div>
-    @endif
+   @if(session('success'))
+    <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
 
   <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
     <div class="p-0">
@@ -23,7 +23,7 @@
                     <th class="p-3">Program Name</th>
                     <th class="p-3">Semester</th>
                     <th class="p-3">Total Subjects</th>
-                    <th class="p-3">Subject Name</th>
+                    <th class="py-3 px-2">Subjects</th>
                     <th class="py-3">Type</th>
                     
                     <th class="p-3">Edit</th>
@@ -39,7 +39,17 @@
                     <td class="p-3 font-semibold">{{ $semester->program_name }}</td>
                     <td class="p-3 font-semibold">{{ $semester->semester_number }}</td>
                     <td class="p-3 font-semibold">{{ $semester->total_subjects }}</td>
-                    <td class="p-3 font-semibold">{{ $semester->subject_name }}</td>  
+                    <td class="py-3 px-2">
+                        @forelse(($semester->subjects ?? []) as $subject)
+    <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">
+        {{ $subject->name }} ({{ $subject->course }})
+    </span>
+@empty
+    <span class="text-xs text-gray-400">
+        No subjects linked
+    </span>
+@endforelse
+                    </td> 
                       <td class="px-3 py-2">
                             @if($semester->type === 'Compulsory')
                                 <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md text-xs font-semibold">

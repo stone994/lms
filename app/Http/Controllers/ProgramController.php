@@ -33,7 +33,6 @@ class ProgramController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
 public function store(ProgramRequest $request)
 {
     $program = Program::create($request->validated());
