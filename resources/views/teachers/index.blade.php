@@ -25,6 +25,7 @@
                     <th class="p-3">Phone No</th>
                     <th class="p-3">department</th>
                     <th class="p-3">Education</th>
+                    <th class="p-3">Upload Image</th>
                     <th class="py-3 px-2">Subjects</th>
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
@@ -39,6 +40,16 @@
                     <td class="p-3 font-semibold">{{ $teacher->phone }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->department }}</td>
                     <td class="p-3 font-semibold">{{ $teacher->education }}</td>
+                    <td class="p-3 font-semibold">
+                        @if ($teacher->path)
+                        <img src="{{ asset('storage/' . $teacher->path) }}" 
+                        alt="{{ $teacher->name }}"
+            class="w-16 h-16 object-cover rounded-full border"
+                        >
+                        @else
+        <span class="text-gray-500">No image</span>
+    @endif
+                    </td>
                     <td class="py-3 px-2">
                         @forelse($teacher->subjects as $subject)
                             <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">

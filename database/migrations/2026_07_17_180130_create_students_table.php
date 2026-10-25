@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->integer('cnic');
+            $table->string('path')->nullable();
             $table->timestamps();
         });
     }

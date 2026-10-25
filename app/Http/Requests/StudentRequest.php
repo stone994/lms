@@ -27,6 +27,7 @@ class StudentRequest extends FormRequest
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|max:255',
             'cnic'        => 'required|string|max:20',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 }

@@ -16,6 +16,7 @@ class Teacher extends Model
         'phone',
         'department',
         'education',
+        'path',
     ];
      public function subjects()
     {

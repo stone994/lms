@@ -28,6 +28,7 @@ class TeacherRequest extends FormRequest
             'phone'=>'required|string|max:11',
             'department'=>'required|string|max:255',
             'education'=>'required|string|max:255',
+            'image'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ];
     }
 }

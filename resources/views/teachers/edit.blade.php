@@ -28,6 +28,41 @@
                 <input type="text" name="education" value="{{ old('education', $teacher->education) }}" required placeholder="MSCS" class="w-full border p-2 rounded-lg mt-1">
             </div>
              <div>
+            <label class="block text-sm font-medium mb-2">
+                Current Image
+            </label>
+
+            @if($student->path)
+                <img src="{{ asset('storage/' . $teacher->path) }}"
+                     alt="Student Image"
+                     class="w-24 h-24 object-cover rounded-full border mb-3">
+            @else
+                <p class="text-gray-500 mb-3">No image uploaded</p>
+            @endif
+
+            <label class="block text-sm font-medium">
+                Choose New Image (Optional)
+            </label>
+
+            <input type="file"
+               name="image"
+               accept="image/jpeg,image/png,image/webp"
+               class="block w-full text-sm text-gray-600
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-lg file:border-0
+                      file:bg-blue-100 file:text-blue-700
+                      file:font-semibold
+                      hover:file:bg-blue-200">
+
+        <p class="text-xs text-gray-500 mt-3">
+            Please select a JPG, PNG or WEBP image.
+        </p>
+
+            @error('image')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
+        </div>
+             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Select Subjects</label>
                 <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
                     @foreach($subjects as $subject)

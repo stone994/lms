@@ -24,6 +24,7 @@
                     <th class="p-3">Name</th>
                     <th class="p-3">Email</th>
                     <th class="p-3">Cnic</th>
+                    <th class="p-3">Upload Image</th>
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
                 </tr>
@@ -36,6 +37,17 @@
                     <td class="p-3 font-semibold">{{ $student->name }}</td>
                     <td class="p-3 font-semibold">{{ $student->email }}</td>
                     <td class="p-3 font-semibold">{{ $student->cnic }}</td>
+                    <td class="p-3">
+    @if($student->path)
+        <img
+            src="{{ asset('storage/' . $student->path) }}"
+            alt="{{ $student->name }}"
+            class="w-16 h-16 object-cover rounded-full border"
+        >
+    @else
+        <span class="text-gray-500">No image</span>
+    @endif
+</td>
                     <td><a href="{{ route('students.edit',$student->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
                      <td class="p-3">
                             <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">

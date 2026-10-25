@@ -8,6 +8,8 @@ use App\Models\Program;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Storage;
+
 class StudentController extends Controller
 {
     /**
@@ -24,17 +26,30 @@ class StudentController extends Controller
         return view('students.create');
     }
 
-    public function store(Request $request)
-    {
-        Student::create($request->validated());
-        return redirect()->route('students.index')->with('success', 'Student added successfully!');
+   
+public function store(StudentRequest $request)
+{
+    $data = $request->validated();
+
+    if ($request->hasFile('image')) {
+        $data['path'] = $request->file('image')
+            ->store('students', 'public');
     }
 
+    unset($data['image']);
+
+    Student::create($data);
+
+    return redirect()
+        ->route('students.index')
+        ->with('success', 'Student added successfully!');
+}
     public function edit(string $id)
-    {
-        $students = Student::findOrFail($id);
-        return view('students.edit', compact('students'));
-    }
+{
+    $student = Student::findOrFail($id);
+
+    return view('students.edit', compact('student'));
+}
 
     public function update(StudentRequest $request, string $id)
     {

@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Storage;
 use Transliterator;
 
 class TeacherController extends Controller
@@ -34,10 +35,22 @@ class TeacherController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(TeacherRequest $request)
     {
-        $teacher=Teacher::create($request->validated());
-        $teacher->subjects()->sync(
+        
+        $data = $request->validated();
+
+    if ($request->hasFile('image')) {
+        $data['path'] = $request->file('image')
+            ->store('teachers', 'public');
+    }
+
+    unset($data['image']);
+
+    $teacher = Teacher::create($data);
+
+    $teacher->subjects()->sync(
         $request->input('subject_ids', [])
     );
         return redirect()->route('teachers.index')->with('success','teacher create successfullt');
