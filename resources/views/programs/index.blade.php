@@ -1,4 +1,4 @@
-@extends('layout.welcome') 
+@extends('layouts.welcome') 
 
 @section('content')
 <div class="container-fluid pt-4">
@@ -8,10 +8,7 @@
             <i class="fas fa-plus mr-2"></i> Add New Program
         </a></div>
 
-     <div class="mt-3">
-        <a href="{{ route('semesters.index') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Select Program</a>
-        
-    </div>
+    
     
 
     @if(session('status'))
