@@ -27,6 +27,7 @@
                     <th class="p-3">Upload Image</th>
                     <th class="p-3">Edit</th>
                     <th class="p-3">Delete</th>
+                    <th class="p-3">Print PDF</th>
                 </tr>
             </thead>
             <tbody class="divide-y text-sm">
@@ -57,12 +58,24 @@
                                     Delete
                                 </button>
                             </form>
-                        </td>     
+                        </td>  
+                            <td class="p-3 font-semibold"> <td class="p-3">
+   <a href="{{ route('students.print', $student->id) }}"
+           target="_blank"
+           class="bg-green-600 text-white px-3 py-2 rounded-lg">
+            Print PDF
+        </a>
+</td></td>   
                 </tr>
                 
                 @endforeach
+                
+
             </tbody>
         </table>
+          <div class="mt-4">
+            {{ $students->links() }}
+        </div>
     </div> </div>
 </div>
 @endsection

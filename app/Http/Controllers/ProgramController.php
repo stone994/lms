@@ -15,7 +15,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::all();
+        $programs = Program::paginate(1);
         return view('programs.index', compact('programs'));
     }
 

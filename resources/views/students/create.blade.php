@@ -14,10 +14,13 @@
                 <label class="block text-sm font-medium text-gray-700">Full Name</label>
                 <input type="text" name="name" required placeholder="Kamran Ahmed" class="w-full border p-2 rounded-lg mt-1">
             </div>
+            
             <div>
                 <label class="block text-sm font-medium text-gray-700">Email Address</label>
                 <input type="email" name="email" required placeholder="kamran@university.edu" class="w-full border p-2 rounded-lg mt-1">
             </div>
+          
+            
             <div>
                 <label class="block text-sm font-medium text-gray-700">Cnic</label>
                 <input type="text" name="cnic" required placeholder="3333333333" class="w-full border p-2 rounded-lg mt-1">
@@ -57,5 +60,14 @@
                 <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm">Save student</button>
             </div>
         </form>
+          <div>
+                <button type="submit"
+            name="action"
+            value="print"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+        <i class="fas fa-file-pdf mr-1"></i>
+        Save & Print PDF
+    </button>
+            </div>
 </div>
 @endsection

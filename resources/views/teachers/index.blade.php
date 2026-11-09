@@ -73,6 +73,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-4">
+            {{ $teachers->links() }}
+        </div>
     </div> </div>
 </div>
 @endsection

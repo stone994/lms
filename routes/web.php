@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\ProfileController;
@@ -21,6 +20,9 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
 Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     Route::resource('students', StudentController::class);
+
+Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])
+    ->name('students.print');
 });
 
 Route::get('/', function () {
@@ -30,10 +32,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('layouts.welcome');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
-
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
