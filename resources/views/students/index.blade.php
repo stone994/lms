@@ -1,81 +1,127 @@
-@extends('layouts.welcome') 
+```blade
+@extends('layouts.welcome')
 
 @section('content')
+
+<link rel="stylesheet"
+    href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
+
 <div class="container-fluid pt-4">
-   <div class="flex justify-between items-center mb-3 ml-3">
+
+    <div class="flex justify-between items-center mb-3 ml-3">
+
         <h2 class="text-2xl font-bold">Student Management</h2>
-        <a href="{{ route('students.create') }}" class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors">
-            <i class="fas fa-plus mr-2"></i> Add New Student
-        </a></div>
 
-    @if(session('status'))
-        <div class="alert alert-success mb-4">
-            {{ session('status') }}
-        </div>
-    @endif
+        <a href="{{ route('students.create') }}"
+            class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors">
 
-   <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-    <div class="p-0">
-        <table class="w-full border-collapse border border-gray-200 mb-0">
-            <thead class="bg-gray-800 text-white">
-                <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Lms Account</th>
-                    <th class="p-3">Name</th>
-                    <th class="p-3">Email</th>
-                    <th class="p-3">Cnic</th>
-                    <th class="p-3">Upload Image</th>
-                    <th class="p-3">Edit</th>
-                    <th class="p-3">Delete</th>
-                    <th class="p-3">Print PDF</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y text-sm">
-                @foreach($students as $student)
-                <tr>
-                    <td class="p-3 font-semibold">{{ $student->id }}</td>
-                    <td class="p-3 font-mono text-blue-600">{{ $student->lms_account }}</td>
-                    <td class="p-3 font-semibold">{{ $student->name }}</td>
-                    <td class="p-3 font-semibold">{{ $student->email }}</td>
-                    <td class="p-3 font-semibold">{{ $student->cnic }}</td>
-                    <td class="p-3">
-    @if($student->path)
-        <img
-            src="{{ asset('storage/' . $student->path) }}"
-            alt="{{ $student->name }}"
-            class="w-16 h-16 object-cover rounded-full border"
-        >
-    @else
-        <span class="text-gray-500">No image</span>
-    @endif
-</td>
-                    <td><a href="{{ route('students.edit',$student->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                     <td class="p-3">
-                            <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>  
-                            <td class="p-3 font-semibold"> <td class="p-3">
-   <a href="{{ route('students.print', $student->id) }}"
-           target="_blank"
-           class="bg-green-600 text-white px-3 py-2 rounded-lg">
-            Print PDF
+            <i class="fas fa-plus mr-2"></i>
+            Add New Student
+
         </a>
-</td></td>   
-                </tr>
-                
-                @endforeach
-                
 
-            </tbody>
-        </table>
-          <div class="mt-4">
-            {{ $students->links() }}
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success mb-4">
+            {{ session('success') }}
         </div>
-    </div> </div>
+    @endif
+
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+
+        <div class="p-3">
+
+            <table id="studentsTable"
+                class="w-full border-collapse border border-gray-200 mb-0">
+
+                <thead class="bg-gray-800 text-white">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>LMS Account</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>CNIC</th>
+                        <th>Upload Image</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th>Print PDF</th>
+                    </tr>
+
+                </thead>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+
+<script>
+
+   $(document).ready(function () {
+    $('#studentsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('students.data') }}",
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'lms_account', name: 'lms_account' },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            { data: 'cnic', name: 'cnic' },
+            { 
+                data: 'image', 
+                name: 'path', 
+                render: function(data) {
+                    return data ? `<img src="${data}" class="w-16 h-16 rounded-full object-cover">` : 'No image';
+                },
+                orderable: false, 
+                searchable: false 
+            },
+            { 
+                data: 'edit', 
+                name: 'edit',
+                render: function(data) {
+                    return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`;
+                },
+                orderable: false, 
+                searchable: false 
+            },
+            { 
+                data: 'delete', 
+                name: 'delete',
+                render: function(data) {
+                    return `
+                        <form action="${data}" method="POST" onsubmit="return confirm('Are you sure?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="bg-red-600 text-white px-3 py-2 rounded-lg">Delete</button>
+                        </form>
+                    `;
+                },
+                orderable: false, 
+                searchable: false 
+            },
+            { 
+                data: 'print', 
+                name: 'print',
+                render: function(data) {
+                    return `<a href="${data}" target="_blank" class="bg-green-600 text-white px-3 py-2 rounded-lg">Print PDF</a>`;
+                },
+                orderable: false, 
+                searchable: false 
+            }
+        ]
+    });
+});
+
+</script>
+
 @endsection

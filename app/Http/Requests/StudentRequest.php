@@ -26,7 +26,7 @@ class StudentRequest extends FormRequest
             'lms_account' => 'required|string|max:20',
             'name'        => 'required|string|max:255',
             'email'       => 'required|email|max:255',
-            'cnic'        => 'required|string|max:20',
+            'cnic' => 'required|digits:13',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }

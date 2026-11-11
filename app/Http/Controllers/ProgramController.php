@@ -8,6 +8,8 @@ use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
 use App\Http\Requests\ProgramRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Yajra\DataTables\Facades\DataTables;
 class ProgramController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::paginate(1);
+        $programs = Program::all();
         return view('programs.index', compact('programs'));
     }
 

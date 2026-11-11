@@ -17,58 +17,71 @@
         </div>
     @endif
 
-  <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-    <div class="p-0">
-        <table class="w-full border-collapse border border-gray-200 mb-0">
-            <thead class="bg-gray-800 text-white">
-                <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Name</th>
-                    <th class="p-3">Program Code</th>
-                    <th class="p-3">Duration</th>
-                    <th class="py-3 px-2">Subjects</th>
-                    <th class="p-3">Edit</th>
-                    <th class="p-3">Delete</th>
+ 
+      
 
-                    
-                </tr>
-            </thead>
-            <tbody class="divide-y text-sm">
-                @foreach($programs as $program)
-                <tr>
-                    <td class="p-3 font-semibold">{{ $program->id }}</td>
-                    <td class="p-3 font-mono text-blue-600">{{ $program->name }}</td>
-                    <td class="p-3 font-semibold">{{ $program->program_code }}</td>
-                    <td class="p-3 font-semibold">{{ $program->duration }}</td> 
-                    
-                    <td class="py-3 px-2">
-                        @forelse($program->subjects as $subject)
-                            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">
-                                {{ $subject->name }} ({{ $subject->course }})
-                            </span>
-                        @empty
-                            <span class="text-xs text-gray-400">No subjects linked</span>
-                        @endforelse
-                    </td>
-                    
-                    <td><a href="{{ route('programs.edit',$program->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">Edit</a></td> 
-                   <td class="p-3">
-                            <form action="{{ route('programs.destroy', $program->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>   
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="mt-4">
-            {{ $programs->links() }}
-        </div>
-    </div> 
-</div></div>
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('#programsTable').DataTable({
+
+            processing: true,
+
+            serverSide: true,
+
+            ajax: "{{ route('programs.data') }}",
+
+            columns: [
+
+                {
+                    data: 'id',
+                    name: 'id'
+                },
+
+                {
+                    data: 'program_name',
+                    name: 'program_name'
+                },
+
+                {
+                    data: 'program_code',
+                    name: 'program_code'
+                },
+
+                {
+                    data: 'duration',
+                    name: 'duration'
+                },
+
+                {
+                    data: 'cnic',
+                    name: 'cnic'
+                },
+
+
+                {
+                    data: 'edit',
+                    orderable: false,
+                    searchable: false
+                },
+
+                {
+                    data: 'delete',
+                    orderable: false,
+                    searchable: false
+                },
+
+                
+
+            ]
+
+        });
+
+    });
+
+</script>
 @endsection

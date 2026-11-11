@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('lms_account');
             $table->string('name');
             $table->string('email');
-            $table->
             $table->integer('cnic');
             $table->string('path')->nullable();
             $table->timestamps();
