@@ -45,25 +45,25 @@
                     <a href="{{ route('programs.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-graduation-cap w-5"></i>
-                        <span>Program</span>
+                        <span>Programs</span>
                     </a>
 
                     <a href="{{ route('subjects.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-book w-5"></i>
-                        <span>Subject</span>
+                        <span>Subjects</span>
                     </a>
 
                     <a href="{{ route('teachers.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-chalkboard-teacher w-5"></i>
-                        <span>Teacher</span>
+                        <span>Teachers</span>
                     </a>
 
                     <a href="{{ route('students.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-user-graduate w-5"></i>
-                        <span>Student</span>
+                        <span>Students</span>
                     </a>
 
                     <a href="{{ route('semesters.index') }}"
@@ -80,19 +80,19 @@
                     <a href="{{ route('teachers.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-chalkboard-teacher w-5"></i>
-                        <span>Teacher</span>
+                        <span>Teachers</span>
                     </a>
 
                     <a href="{{ route('subjects.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-book w-5"></i>
-                        <span>Subject</span>
+                        <span>Subjects</span>
                     </a>
 
                     <a href="{{ route('students.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-user-graduate w-5"></i>
-                        <span>Student</span>
+                        <span>Students</span>
                     </a>
 
                 @endif
@@ -103,13 +103,13 @@
                     <a href="{{ route('students.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-user-graduate w-5"></i>
-                        <span>Student</span>
+                        <span>Students</span>
                     </a>
 
                     <a href="{{ route('programs.index') }}"
                        class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
                         <i class="fas fa-graduation-cap w-5"></i>
-                        <span>Program</span>
+                        <span>Programs</span>
                     </a>
 
                     <a href="{{ route('semesters.index') }}"

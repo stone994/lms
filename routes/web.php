@@ -22,9 +22,8 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
 
 Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
    Route::get('/students/data', [StudentController::class, 'getStudents'])->name('students.data');
-Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])->name('students.print');
-Route::resource('students', StudentController::class);
-
+    Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])->name('students.print');
+    Route::resource('students', StudentController::class);
 });
 
 Route::get('/', function () {

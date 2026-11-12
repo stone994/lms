@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.welcome')
 
 @section('content')
