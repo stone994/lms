@@ -20,6 +20,20 @@ class ProgramController extends Controller
         $programs = Program::all();
         return view('programs.index', compact('programs'));
     }
+    public function getPrograms(){
+        $programs = Program::query();
+        return Datatables::eloquent($programs)
+         ->addColumn('edit', function ($programs) {
+                return route('programs.edit', $programs->id);
+            })
+            ->addColumn('delete', function ($programs) {
+                return route('programs.destroy', $programs->id);
+            })
+            ->addColumn('print', function ($programs) {
+                return route('programs.print', $programs->id);
+            })
+            ->toJson();
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -31,8 +45,17 @@ class ProgramController extends Controller
         return view('programs.create', compact('subjects'));
     }
     
+      public function printPdf($id)
+    {
+        $program = Program::findOrFail($id);
 
-    /**
+        $pdf = Pdf::loadView('programs.print', compact('program'));
+
+        return $pdf->stream('program-' . $program->id . '.pdf');
+    }
+
+
+    /*
      * Store a newly created resource in storage.
      */
 public function store(ProgramRequest $request)

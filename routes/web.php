@@ -11,8 +11,17 @@ use App\Http\Controllers\SemesterController;
 
 
 Route::middleware(['auth', 'role:admin,student'])->group(function () {
+    
+Route::get('/programs/data', [ProgramController::class, 'getPrograms'])
+    ->name('programs.data');
+
+Route::get('/programs/{id}/print', [ProgramController::class, 'printPdf'])->name('programs.print');
+
     Route::resource('programs', ProgramController::class);
+
     Route::resource('semesters', SemesterController::class);
+
+
 });
 
 Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
@@ -20,12 +29,17 @@ Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
     Route::resource('teachers', TeacherController::class);
 });
 
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
-   Route::get('/students/data', [StudentController::class, 'getStudents'])->name('students.data');
-Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])->name('students.print');
-Route::resource('students', StudentController::class);
-
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])->name('students.print');
+    Route::resource('students', StudentController::class);
 });
+
+
+Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+    Route::get('/students/data', [StudentController::class, 'getStudents'])->name('students.data');
+    Route::resource('students', StudentController::class);
+});
+
 
 Route::get('/', function () {
     return view('layouts.welcome');
