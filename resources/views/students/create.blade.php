@@ -7,6 +7,17 @@
     
     <form action="{{ route('students.store') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
         @csrf
+        @if ($errors->any())
+    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+        <h3 class="font-bold">Please fix these errors:</h3>
+
+        <ul class="list-disc ml-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <div>
             <label class="block text-sm font-medium text-gray-700">Lms Account</label>
             <input type="text" name="lms_account" required placeholder="bc230400004" value="{{ old('lms_account') }}" class="w-full border p-2 rounded-lg mt-1">
@@ -27,7 +38,14 @@
         
         <div>
             <label class="block text-sm font-medium text-gray-700">Cnic</label>
-            <input type="text" name="cnic" required placeholder="3333333333" value="{{ old('cnic') }}" class="w-full border p-2 rounded-lg mt-1">
+            <input type="text"
+       name="cnic"
+       required
+       maxlength="13"
+       minlength="13"
+       placeholder="3520212345671"
+       value="{{ old('cnic') }}"
+       class="w-full border p-2 rounded-lg mt-1">
             @error('cnic') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
         </div>
 

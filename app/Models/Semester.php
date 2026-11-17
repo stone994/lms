@@ -12,6 +12,8 @@ class Semester extends Model
     // Add this relationship method:
     public function subjects(): BelongsToMany
     {
-        return $this->belongsToMany(Subject::class);
+        return $this->belongsToMany(Subject::class)
+        ->withPivot('subject_type')
+        ->withTimestamps();
     }
 }

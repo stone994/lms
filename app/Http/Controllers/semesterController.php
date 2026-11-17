@@ -20,6 +20,27 @@ public function index()
      return view('semesters.index', compact('semesters'));
  
 }
+public function assignSubjects(Request $request){
+    $semester=Semester::findOrFail($request->semester_id);
+    $semester->subjects()->attach([
+        1 => ['subject_type' => 'compulsory'],
+        2 => ['subject_type' => 'optional'],
+        3 => ['subject_type' => 'compulsory'],
+    ]);
+    return "subjects asssign successsfully";
+}
+
+public function getSubjects($id)
+{
+    $semester = Semester::with('subjects')->findOrFail($id);
+
+    foreach ($semester->subjects as $subject) {
+
+        echo $subject->name . " - ";
+
+        echo $subject->pivot->subject_type . "<br>";
+    }
+}
 
     /**
      * Show the form for creating a new resource.

@@ -24,7 +24,9 @@ class Subject extends Model
     }
     public function semesters(): BelongsToMany
     {
-        return $this->belongsToMany(Semester::class);
+        return $this->belongsToMany(Semester::class)
+        ->withPivot('subject_type')
+        ->withTimestamps();
     }
     
 }

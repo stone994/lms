@@ -4,7 +4,10 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Faculty Member</h2>
-        <form action="{{ route('students.update',$student->id) }}" method="POST" class="space-y-4">
+        <form action="{{ route('students.update', $student->id) }}"
+      method="POST"
+      class="space-y-4"
+      enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div>

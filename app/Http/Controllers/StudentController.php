@@ -58,27 +58,24 @@ class StudentController extends Controller
         return $pdf->stream('student-' . $student->id . '.pdf');
     }
    
-    public function store(StudentRequest $request)
-    {
-        $data = $request->validated();
+   
+public function store(StudentRequest $request)
+{
+    $data = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $data['path'] = $request->file('image')
-                ->store('students', 'public');
-        }
-
-        unset($data['image']);
-
-        $student = Student::create($data);
-
-        if ($request->input('action') === 'print') {
-            return redirect()->route('students.print', $student->id);
-        }
-
-        return redirect()
-            ->route('students.index')
-            ->with('success', 'Student added successfully!');
+    if ($request->hasFile('image')) {
+        $data['path'] = $request->file('image')
+            ->store('students', 'public');
     }
+
+    unset($data['image']);
+
+    $student = Student::create($data);
+
+    return redirect()
+        ->route('students.index')
+        ->with('success', 'Student added successfully!');
+}
 
     public function edit(string $id)
     {

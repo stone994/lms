@@ -1,50 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\SemesterController;
-
-
-
-Route::middleware(['auth', 'role:admin,student'])->group(function () {
-    
-Route::get('/programs/data', [ProgramController::class, 'getPrograms'])
-    ->name('programs.data');
-
-Route::get('/programs/{id}/print', [ProgramController::class, 'printPdf'])->name('programs.print');
-
-    Route::resource('programs', ProgramController::class);
-
-    Route::resource('semesters', SemesterController::class);
-
-
-});
-
-Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
-    Route::resource('subjects', SubjectController::class);
-    Route::resource('teachers', TeacherController::class);
-});
-
-<<<<<<< HEAD
-Route::middleware(['auth', 'role:admin'])->group(function () {
-=======
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
-   Route::get('/students/data', [StudentController::class, 'getStudents'])->name('students.data');
->>>>>>> 4d8b17262bdaf19f170af0c85a3051eaaaa33652
-    Route::get('/students/{id}/print', [StudentController::class, 'printPdf'])->name('students.print');
-    Route::resource('students', StudentController::class);
-});
-
-
-Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
-    Route::get('/students/data', [StudentController::class, 'getStudents'])->name('students.data');
-    Route::resource('students', StudentController::class);
-});
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('layouts.welcome');
@@ -60,7 +22,35 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Admin & Student Routes
+Route::middleware(['auth', 'role:admin,student'])->group(function () {
+    Route::get('/programs/data', [ProgramController::class, 'getPrograms'])->name('programs.data');
+    Route::get('/programs/{id}/print', [ProgramController::class, 'printPdf'])->name('programs.print');
+    Route::resource('programs', ProgramController::class);
 
+    Route::resource('semesters', SemesterController::class);
 
+    Route::get('/semester/subjects/{id}',
+    [SemesterController::class, 'getSubjects']);
+});
+
+// Admin & Teacher Routes
+Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
+    Route::resource('subjects', SubjectController::class);
+    Route::resource('teachers', TeacherController::class);
+});
+Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
+
+    Route::get('/students/data',
+        [StudentController::class, 'getStudents']
+    )->name('students.data');
+
+    Route::get('/students/{id}/print',
+        [StudentController::class, 'printPdf']
+    )->name('students.print');
+
+    Route::resource('students', StudentController::class);
+
+});
 
 require __DIR__.'/auth.php';

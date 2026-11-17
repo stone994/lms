@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('semester_id')->constrained('semesters')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->enum('subject_type',['compulsory','optional']);
             $table->timestamps();
+             $table->unique(['semester_id', 'subject_id']);
         });
     }
 

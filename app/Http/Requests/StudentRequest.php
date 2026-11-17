@@ -20,14 +20,14 @@ class StudentRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+     public function rules(): array
     {
-        return [
-            'name'        => 'required|string|max:255',
-            'lms_account' => ['required', 'string', 'max:20'],
-'email'       => ['required', 'email', 'max:255'],
-'cnic'        => ['required', 'digits:13'],
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+         return [
+            'name' => 'required|string|max:255',
+            'lms_account' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'cnic' => 'required|digits:13',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
     }
 }
