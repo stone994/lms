@@ -112,7 +112,6 @@ public function store(StudentRequest $request)
     {
         $student = Student::findOrFail($id);
 
-        // Clean up the image file from storage when the record is deleted
         if ($student->path) {
             Storage::disk('public')->delete($student->path);
         }

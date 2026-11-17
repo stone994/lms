@@ -6,6 +6,8 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AcademicController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,6 +52,14 @@ Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     )->name('students.print');
 
     Route::resource('students', StudentController::class);
+
+});
+
+Route::middleware(['auth','role:admin'])->group(function(){
+
+    Route::get('/academics/data',[AcademicController::class, 'getAcademic'])->name('academics.data');
+    
+    Route::resource('academics', AcademicController::class);
 
 });
 

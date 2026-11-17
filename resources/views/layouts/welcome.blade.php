@@ -72,6 +72,12 @@
                         <span>Semester Management</span>
                     </a>
 
+                    <a href="{{ route('academics.index') }}"
+                       class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
+                        <i class="fas fa-calendar-alt w-5"></i>
+                        <span>Academic Management</span>
+                    </a>
+
                 @endif
 
 

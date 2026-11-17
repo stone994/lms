@@ -14,24 +14,24 @@
     </div>
 @endif
 
-  <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
-    <div class="p-0">
-        <table class="w-full border-collapse border border-gray-200 mb-0">
-            <thead class="bg-gray-800 text-white">
-                <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
-                    <th class="p-3">ID</th>
-                    <th class="p-3">Program Name</th>
-                    <th class="p-3">Semester</th>
-                    <th class="p-3">Total Subjects</th>
-                    <th class="py-3 px-2">Subjects</th>
-                    <th class="py-3">Type</th>
-                    
-                    <th class="p-3">Edit</th>
-                    <th class="p-3">Delete</th>
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <div class="p-0">
+            <table class="w-full border-collapse border border-gray-200 mb-0">
+                <thead class="bg-gray-800 text-white">
+                    <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
+                        <th class="p-3">ID</th>
+                        <th class="p-3">Program Name</th>
+                        <th class="p-3">Semester</th>
+                        <th class="p-3">Total Subjects</th>
+                        <th class="py-3 px-2">Subjects</th>
+                        <th class="py-3">Type</th>
+                        
+                        <th class="p-3">Edit</th>
+                        <th class="p-3">Delete</th>
 
-                    
-                </tr>
-            </thead>
+                        
+                    </tr>
+                </thead>
             <tbody class="divide-y text-sm">
                 @foreach($semesters as $semester)
                 <tr>
