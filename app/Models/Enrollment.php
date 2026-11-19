@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Enrollment extends Model
 {
+    protected $fillable = [
+        'student_id',
+        'program_id',
+        'semester_id',
+        'session',
+        'status',
+    ];
     public function student(){
         return $this->belongsTo(Student::class);
     }

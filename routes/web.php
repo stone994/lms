@@ -7,7 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AcademicController;
-
+use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -60,6 +60,12 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::get('/academics/data',[AcademicController::class, 'getAcademic'])->name('academics.data');
     
     Route::resource('academics', AcademicController::class);
+
+});
+
+Route::middleware(['auth','role:admin'])->group(function(){
+    
+    Route::resource('enrollments', EnrollmentController::class);
 
 });
 

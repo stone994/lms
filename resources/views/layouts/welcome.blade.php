@@ -78,6 +78,13 @@
                         <span>Academic Management</span>
                     </a>
 
+                    <a href="{{ route('enrollments.index') }}"
+                       class="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-[#252d41] hover:text-white">
+                        <i class="fas fa-calendar-alt w-5"></i>
+                        <span>Enrollment</span>
+                    </a>
+
+
                 @endif
 
 
