@@ -25,4 +25,8 @@ class Enrollment extends Model
     public function semester(){
         return $this->belongsTo(Semester::class);
     }
+    public function subjects(){
+        return $this->belongsToMany(Subject::class,'enrollment_subjects')
+        ->withTimestamps();
+    }
 }

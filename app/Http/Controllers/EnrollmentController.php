@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EnrollmentRequest;
-use App\Models\Enrollment;
 use App\Models\Program;
 use App\Models\Semester;
 use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Enrollment;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 
 class EnrollmentController extends Controller
@@ -19,10 +21,40 @@ class EnrollmentController extends Controller
         $enrollments=Enrollment::with([
              'program',
             'student',
-            'semester'
+            'semester',
+            'subjects'
         ])->latest()->get();
         return view('enrollments.index',compact('enrollments'));
     }
+
+    public function getEnrollment()
+{
+    $enrollments = Enrollment::with('subjects')->select('enrollments.*');
+
+    return DataTables::eloquent($enrollments)
+        ->addColumn('image', function ($enrollment) {
+            return $enrollment->path
+                ? asset('storage/' . $enrollment->path)
+                : null;
+        })
+        ->addColumn('subjects', function ($enrollment) {
+            return $enrollment->subjects
+                ->pluck('name')
+                ->implode(', ');
+        })
+        ->filterColumn('subjects', function ($query, $keyword) {
+            $query->whereHas('subjects', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            });
+        })
+        ->addColumn('edit', function ($enrollment) {
+            return route('enrollments.edit', $enrollment->id);
+        })
+        ->addColumn('delete', function ($enrollment) {
+            return route('enrollments.destroy', $enrollment->id);
+        })
+        ->toJson();
+}
 
     /**
      * Show the form for creating a new resource.
@@ -33,7 +65,8 @@ class EnrollmentController extends Controller
         $programs = Program::all();
     $students = Student::all();   
     $semesters = Semester::all();
-    return view('enrollments.create',compact('programs','students','semesters'));
+    $subjects = Subject::all();
+    return view('enrollments.create',compact('programs','students','semesters','subjects'));
     }
 
     /**
@@ -42,11 +75,14 @@ class EnrollmentController extends Controller
     public function store(EnrollmentRequest $request)
     {
          $enrollment = Enrollment::create($request->validated());
+         $enrollment->subjects()->sync(
+            $request->input('subject_ids',[])
+         );
           return redirect()
         ->route('enrollments.index')
         ->with('success', 'Enrollment created successfully.');
     }
-
+   
     /**
      * Display the specified resource.
      */
@@ -58,35 +94,56 @@ class EnrollmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        $programs = Program::all();
-    $students = Student::all();   
+public function edit(string $id)
+{
+    $enrollment = Enrollment::with('subjects')->findOrFail($id);
+
+    $programs = Program::all();
+    $students = Student::all();
     $semesters = Semester::all();
-    return view('enrollments.edit',compact('programs','students','semesters'));
-    }
+    $subjects = Subject::all();
+
+    return view('enrollments.edit', compact(
+        'enrollment',
+        'programs',
+        'students',
+        'semesters',
+        'subjects'
+    ));
+}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(EnrollmentRequest $request, string $id)
     {
-        $enrollment = Enrollment::update($request->validated());
-          return redirect()
+    $enrollment = Enrollment::findOrFail($id);
+
+    $enrollment->update($request->validated());
+
+    $enrollment->subjects()->sync(
+        $request->input('subject_ids', [])
+    );
+
+    return redirect()
         ->route('enrollments.index')
-        ->with('success', 'Enrollment update successfully.');
-    }
+        ->with('success', 'Enrollment updated successfully.');
+}
+    
 
     /**
      * Remove the specified resource from storage.
      */
-   public function destroy(string $id)
+ public function destroy(string $id)
 {
     $enrollment = Enrollment::findOrFail($id);
+
+    $enrollment->subjects()->detach();
+
     $enrollment->delete();
 
     return redirect()
         ->route('enrollments.index')
         ->with('success', 'Enrollment deleted successfully.');
-} 
+}     
 }

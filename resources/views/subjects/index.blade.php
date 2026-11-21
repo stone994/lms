@@ -1,6 +1,8 @@
 @extends('layouts.welcome') 
 
 @section('content')
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
+
 <div class="container-fluid pt-4">
    <div class="flex justify-between items-center mb-3 ml-3">
         <h2 class="text-2xl font-bold">Subjects Management</h2>
@@ -16,47 +18,64 @@
 
  <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
     <div class="p-0">
-        <table class="w-full border-collapse border border-gray-200 mb-0">
+        <table id="SubjectsTable" class="w-full border-collapse border border-gray-200 mb-0">
             <thead class="bg-gray-800 text-white">
-                    <tr class="bg-gray-50 border-b text-xs font-semibold uppercase text-gray-600">
-                        <th class="p-3">ID</th>
-                        <th class="p-3">Name</th>
-                        <th class="p-3">Course</th>
-                        <th class="p-3">Credit Hour</th>
-                        <th class="p-3">Edit</th>
-                        <th class="p-3">Delete</th>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Credit Hour</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y text-sm">
-                    @foreach($subjects as $subject)
-                    <tr>
-                        <td class="p-3 font-semibold">{{ $subject->id }}</td>
-                        <td class="p-3 font-mono text-blue-600">{{ $subject->name }}</td>
-                        <td class="p-3 font-semibold">{{ $subject->code }}</td>
-                        <td class="p-3 font-semibold">{{ $subject->credit_hour }}</td>
-                        
-                        {{-- Edit Button --}}
-                        <td class="p-3">
-                            <a href="{{ route('subjects.edit', $subject->id) }}" class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg shadow transition inline-block">
-                                Edit
-                            </a>
-                        </td> 
-
-                        {{-- Delete Form (Requires POST with @method('DELETE')) --}}
-                        <td class="p-3">
-                            <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this subject?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg shadow transition">
-                                    Delete
-                                </button>
-                            </form>
-                        </td>   
-                    </tr>
-                    @endforeach
-                </tbody>
+               
             </table>
             
         </div> 
     </div>
-</div>@endsection
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#SubjectsTable').DataTable({
+            processing:true,
+            serverSide:true,
+            ajax:"{{ route('subjects.data') }}",
+            columns:[
+                {data:'id' , name:'id'},
+                {data:'name',name:'name'},
+                {data:'code',name:'code'},
+                {data:'credit_hour',name:'credit_hour'},
+                {
+                    data:'edit',
+                    name:'edit',
+                    render:function(data){
+                        return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`; 
+                    },
+                     orderable: false, 
+                searchable: false },
+                { 
+                data: 'delete', 
+                name: 'delete',
+                render: function(data) {
+                    return `
+                        <form action="${data}" method="POST" onsubmit="return confirm('Are you sure?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="bg-red-600 text-white px-3 py-2 rounded-lg">Delete</button>
+                        </form>
+                    `;
+                },
+                orderable: false, 
+                searchable: false 
+            
+                }
+            ]
+        });
+    });
+</script>
+@endsection

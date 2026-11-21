@@ -4,8 +4,10 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Faculty Member</h2>
-        <form action="{{ route('teachers.update',$teacher->id) }}" method="POST" class="space-y-4">
-            @csrf
+<form action="{{ route('teachers.update', $teacher->id) }}"
+      method="POST"
+      enctype="multipart/form-data"
+      class="space-y-4">            @csrf
             @method('PUT')
             <div>
                 <label class="block text-sm font-medium text-gray-700">Full Name</label>
@@ -32,13 +34,13 @@
                 Current Image
             </label>
 
-            @if($student->path)
-                <img src="{{ asset('storage/' . $teacher->path) }}"
-                     alt="Student Image"
-                     class="w-24 h-24 object-cover rounded-full border mb-3">
-            @else
-                <p class="text-gray-500 mb-3">No image uploaded</p>
-            @endif
+          @if($teacher->path)
+    <img src="{{ asset('storage/' . $teacher->path) }}"
+         alt="Teacher Image"
+         class="w-24 h-24 object-cover rounded-full border mb-3">
+@else
+    <p class="text-gray-500 mb-3">No image uploaded</p>
+@endif
 
             <label class="block text-sm font-medium">
                 Choose New Image (Optional)

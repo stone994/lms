@@ -4,8 +4,17 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Add Faculty Member</h2>
-        <form action="{{ route('teachers.store') }}" method="POST" class="space-y-4">
-            @csrf
+      <form action="{{ route('teachers.store') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <ul class="list-disc pl-5">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
             <div>
                 <label class="block text-sm font-medium text-gray-700">Full Name</label>
                 <input type="text" name="name" required placeholder="Dr. Kamran Ahmed" class="w-full border p-2 rounded-lg mt-1">
@@ -73,7 +82,7 @@
             </p>
         @endforelse
         </div>
-    </div>
+   
             <div class="flex justify-end space-x-2 pt-2">
                 <a href="{{ route('teachers.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
                 <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm">Save Teacher</button>

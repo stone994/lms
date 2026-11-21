@@ -18,7 +18,6 @@
         </select>
     </div>
 
-    <!-- Student -->
     <div>
         <label for="student_id" class="block text-sm font-medium text-gray-700 mb-1">Student</label>
         <select name="student_id" id="student_id" class="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm text-gray-700 bg-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
@@ -29,7 +28,6 @@
         </select>
     </div>
 
-    <!-- Semester -->
     <div>
         <label for="semester_id" class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
         <select name="semester_id" id="semester_id" class="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm text-gray-700 bg-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
@@ -39,14 +37,38 @@
             @endforeach
         </select>
     </div>
+     
+    <div>
+<label class="block text-sm font-medium text-gray-700 mb-1">
+        Select Subjects
+    </label>
+    
+        @forelse($subjects as $subject)
+            <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                <input
+                    type="checkbox"
+                    name="subject_ids[]"
+                    value="{{ $subject->id }}"
+                    class="rounded text-blue-600"
+                >
 
-    <!-- Session -->
+                <span>
+                    {{ $subject->name }} 
+                </span>
+            </label>
+        @empty
+            <p class="text-red-600 text-sm">
+                No subjects found. Please add subjects first.
+            </p>
+        @endforelse
+
+    </div>
+
     <div>
         <label for="session" class="block text-sm font-medium text-gray-700 mb-1">Session</label>
         <input type="text" name="session" id="session" placeholder="Fall 2026" class="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm text-gray-700 bg-white shadow-sm placeholder-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
     </div>
 
-    <!-- Status -->
     <div>
         <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
         <select name="status" id="status" class="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm text-gray-700 bg-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">

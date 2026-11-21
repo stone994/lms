@@ -38,6 +38,11 @@ Route::middleware(['auth', 'role:admin,student'])->group(function () {
 
 // Admin & Teacher Routes
 Route::middleware(['auth', 'role:admin,teacher'])->group(function () {
+    Route::get('/subjects/data',[SubjectController::class, 'getSubjects']
+    )->name('subjects.data');
+    Route::get('/teachers/data',
+    [TeacherController::class, 'getTeacher']
+)->name('teachers.data');
     Route::resource('subjects', SubjectController::class);
     Route::resource('teachers', TeacherController::class);
 });

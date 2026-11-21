@@ -4,8 +4,9 @@
 
 <div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
     <h2 class="text-xl font-bold mb-4">Enroll student</h2>
-        <form action="{{ route('enrollments.update') }}" method="POST" class="space-y-4">
+        <form action="{{ route('enrollments.update',$enrollment->id) }}" method="POST" class="space-y-4">
             @csrf
+            @method('PUT')
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
         <label for="program_id" class="block text-sm font-medium text-gray-700 mb-1">Program</label>
@@ -37,7 +38,18 @@
             @endforeach
         </select>
     </div>
-
+<div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Subjects</label>
+                <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
+                    @foreach($subjects as $subject)
+                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+                            <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}" 
+                                class="rounded text-blue-600"
+                                {{ in_array($subject->id, old('subject_ids', $enrollment->subjects->pluck('id')->toArray())) ? 'checked' : '' }}>
+                            <span>{{ $subject->name }} </span>
+                        </label>
+                    @endforeach
+                </div>
     <!-- Session -->
     <div>
         <label for="session" class="block text-sm font-medium text-gray-700 mb-1">Session</label>

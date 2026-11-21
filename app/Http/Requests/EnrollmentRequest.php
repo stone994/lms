@@ -26,6 +26,7 @@ class EnrollmentRequest extends FormRequest
             'program_id'=>'required',
             'student_id'=>'required',
             'semester_id'=>'required',
+            'subject_ids'=>'required',
             'session'=>'required',
             'status'=>'required|in:active,inactive',
         ];

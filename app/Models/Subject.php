@@ -28,5 +28,9 @@ class Subject extends Model
         ->withPivot('subject_type')
         ->withTimestamps();
     }
+    public function enrollments(){
+        return $this->belongsToMany(Enrollment::class,'enrollment_subjects')
+        ->withTimestamps();
+    }
     
 }

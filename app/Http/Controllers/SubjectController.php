@@ -8,15 +8,27 @@ use App\Models\Program;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
+use Yajra\DataTables\Facades\DataTables;
 class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-         $subjects = Subject::all();
-        return view('subjects.index',compact('subjects'));
+   public function index()
+{
+    return view('subjects.index');
+}
+    public function getSubjects(){
+        $subjects = Subject::query();
+        return DataTables::eloquent($subjects)
+        ->addcolumn('edit',function($subjects){
+            return route('subjects.edit',$subjects->id);
+        })
+        ->addColumn('delete',function($subjects){
+            return route('subjects.destroy',$subjects->id);
+        })
+        
+        ->toJson();
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Storage;
 use Transliterator;
 
@@ -16,12 +17,41 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-         $teachers = Teacher::all();
-        return view('teachers.index',compact('teachers'));
+ public function index()
+{
+    $teachers = Teacher::all();
 
-    }
+    return view('teachers.index', compact('teachers'));
+}
+ public function getTeacher()
+{
+    $teachers = Teacher::with('subjects')->select('teachers.*');
+
+    return DataTables::eloquent($teachers)
+        ->addColumn('image', function ($teacher) {
+            return $teacher->path
+                ? asset('storage/' . $teacher->path)
+                : null;
+        })
+        ->addColumn('subjects', function ($teacher) {
+            return $teacher->subjects
+                ->pluck('name')
+                ->implode(', ');
+        })
+        ->filterColumn('subjects', function ($query, $keyword) {
+            $query->whereHas('subjects', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            });
+        })
+        ->addColumn('edit', function ($teacher) {
+            return route('teachers.edit', $teacher->id);
+        })
+        ->addColumn('delete', function ($teacher) {
+            return route('teachers.destroy', $teacher->id);
+        })
+        ->toJson();
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -36,25 +66,28 @@ class TeacherController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(TeacherRequest $request)
-    {
-        
-        $data = $request->validated();
+public function store(TeacherRequest $request)
+{
+    $data = $request->validated();
+
+    $subjectIds = $data['subject_ids'] ?? [];
+
+    unset($data['subject_ids']);
 
     if ($request->hasFile('image')) {
         $data['path'] = $request->file('image')
             ->store('teachers', 'public');
     }
-
     unset($data['image']);
 
     $teacher = Teacher::create($data);
 
-    $teacher->subjects()->sync(
-        $request->input('subject_ids', [])
-    );
-        return redirect()->route('teachers.index')->with('success','teacher create successfullt');
-    }
+    $teacher->subjects()->sync($subjectIds);
+
+    return redirect()
+        ->route('teachers.index')
+        ->with('success', 'Teacher added successfully!');
+}
 
     /**
      * Display the specified resource.
@@ -82,14 +115,35 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(TeacherRequest $request, string $id)
-    {
-       
-        $teacher=Teacher::findOrFail($id);
-        $teacher->update($request->validated());
-        $teacher->subjects()->sync($request->input('subject_ids', []));
-        return redirect()->route('teachers.index')->with('success','teacher create successfullt');
+  public function update(TeacherRequest $request, string $id)
+{
+    $teacher = Teacher::findOrFail($id);
+
+    $data = $request->validated();
+
+    $subjectIds = $data['subject_ids'] ?? [];
+
+    unset($data['subject_ids']);
+
+    if ($request->hasFile('image')) {
+
+        if ($teacher->path) {
+            Storage::disk('public')->delete($teacher->path);
+        }
+
+        $data['path'] = $request->file('image')
+            ->store('teachers', 'public');
     }
+
+    unset($data['image']);
+
+    $teacher->update($data);
+
+    $teacher->subjects()->sync($subjectIds);
+
+    return redirect()->route('teachers.index')
+        ->with('success', 'Teacher updated successfully!');
+}
     /**
      * Remove the specified resource from storage.
      */
