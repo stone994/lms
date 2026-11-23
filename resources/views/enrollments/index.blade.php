@@ -2,7 +2,8 @@
 @extends('layouts.welcome')
 
 @section('content')
-
+<link rel="stylesheet"
+    href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
 <div class="container-fluid pt-4">
 
     <div class="flex justify-between items-center mb-3 ml-3">
@@ -14,7 +15,6 @@
         </a>
     </div>
 
-    {{-- Success Message --}}
     @if(session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
             {{ session('success') }}
@@ -25,112 +25,78 @@
 
         <div class="p-0">
 
-            <table class="w-full border-collapse border border-gray-200 mb-0">
+            <table id="enrollmentTable" class="w-full border-collapse border border-gray-200 mb-0">
 
                 <thead class="bg-gray-800 text-white">
                     <tr>
-                        <th class="p-3">ID</th>
-                        <th class="p-3">Program</th>
-                        <th class="p-3">Student</th>
-                        <th class="p-3">Semester</th>
-                        <th class="p-3">Subjects</th>
-                        <th class="p-3">Session</th>
-                        <th class="p-3">Status</th>
-                        <th class="p-3">Edit</th>
-                        <th class="p-3">Delete</th>
+                        <th>ID</th>
+                        <th>Program</th>
+                        <th>Student</th>
+                        <th>Semester</th>
+                        <th>Subjects</th>
+                        <th>Session</th>
+                        <th>Status</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
 
-                <tbody class="divide-y text-sm">
-
-                    @forelse($enrollments as $enrollment)
-
-                        <tr>
-
-                            {{-- ID --}}
-                            <td class="p-3 font-mono text-blue-600">
-                                {{ $enrollment->id }}
-                            </td>
-
-                            {{-- Program --}}
-                            <td class="p-3">
-                                {{ $enrollment->program->name ?? 'N/A' }}
-                            </td>
-
-                            {{-- Student --}}
-                            <td class="p-3">
-                                {{ $enrollment->student->name ?? 'N/A' }}
-                            </td>
-
-                            {{-- Semester --}}
-                            <td class="p-3">
-                                {{ $enrollment->semester->semester_number ?? 'N/A' }}
-                            </td>
-
-                            {{-- Subjects --}}
-                            <td class="py-3 px-2">
-
-                                @forelse($enrollment->subjects as $subject)
-
-                                    <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded border border-blue-200 mr-1 mb-1">
-                                        {{ $subject->name }}
-                                    </span>
-
-                                @empty
-
-                                    <span class="text-xs text-gray-400">
-                                        No subjects linked
-                                    </span>
-
-                                @endforelse
-
-                            </td>
-
-                            {{-- Session --}}
-                            <td class="p-3">
-                                {{ $enrollment->session }}
-                            </td>
-
-                            {{-- Status --}}
-                            <td class="p-3">
-                                {{ $enrollment->status }}
-                            </td>
-
-                            {{-- Edit --}}
-                            <td class="p-3">
-                                <a href="{{ route('enrollments.edit', $enrollment->id) }}"
-                                   class="bg-slate-600 hover:bg-slate-700 text-white font-medium px-3 py-2 rounded-lg inline-block">
-                                    Edit
-                                </a>
-                            </td>
-
-                            {{-- Delete --}}
-                            <td class="p-3">
-
-                                <form action="{{ route('enrollments.destroy', $enrollment->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete this enrollment?');">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-2 rounded-lg">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="text-center p-5 text-gray-500">
-                                No enrollments found.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
+                
             </table>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js">
+</script>
+
+<script>
+     $(document).ready(function(){
+        $('#enrollmentTable').DataTable({
+            processing: true,
+        serverSide: true,
+        ajax: "{{ route('enrollments.data') }}",
+     columns: [
+    {data: 'id', name: 'id'},
+    {data: 'program', name: 'program', orderable: false,searchable: true},
+    {data: 'student', name: 'student', orderable: false,searchable: true},
+    {data: 'semester', name: 'semester', orderable: false,searchable: true},
+    { data: 'subjects', name: 'subjects', orderable: false,searchable: true },
+
+    {data: 'session', name: 'session'},
+    {data: 'status', name: 'status'},
+
+    {
+        data: 'edit',
+        name: 'edit',
+        render: function(data) {
+            return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`;
+        },
+        orderable: false,
+        searchable: false
+    },
+
+    {
+        data: 'delete',
+        name: 'delete',
+        render: function(data) {
+            return `
+                <form action="${data}" method="POST"
+                    onsubmit="return confirm('Are you sure?')">
+                    @csrf
+                    @method('DELETE')
+                    <button class="bg-red-600 text-white px-3 py-2 rounded-lg">
+                        Delete
+                    </button>
+                </form>
+            `;
+        },
+        orderable: false,
+        searchable: false
+    }
+]
+        });
+    });
+</script>
 @endsection

@@ -9,6 +9,9 @@ use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\Facades\DataTables;
 class SemesterController extends Controller
 {
     /**
@@ -30,17 +33,29 @@ public function assignSubjects(Request $request){
     return "subjects asssign successsfully";
 }
 
-public function getSubjects($id)
-{
-    $semester = Semester::with('subjects')->findOrFail($id);
+public function getSemester()
+    {
+        $semesters = Semester::with('subjects')
+            ->select('semesters.*');
 
-    foreach ($semester->subjects as $subject) {
+        return DataTables::eloquent($semesters)
 
-        echo $subject->name . " - ";
+            ->addColumn('subjects', function ($semester) {
+                return $semester->subjects
+                    ->pluck('name')
+                    ->implode(', ');
+            })
 
-        echo $subject->pivot->subject_type . "<br>";
+            ->addColumn('edit', function ($semester) {
+                return route('semesters.edit', $semester->id);
+            })
+
+            ->addColumn('delete', function ($semester) {
+                return route('semesters.destroy', $semester->id);
+            })
+
+            ->toJson();
     }
-}
 
     /**
      * Show the form for creating a new resource.

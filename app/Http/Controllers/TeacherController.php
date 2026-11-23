@@ -14,8 +14,7 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        $teachers = Teacher::all();
-       return view('teachers.index', compact('teachers'));
+       return view('teachers.index');
     }
 
     public function getTeacher()
@@ -72,11 +71,11 @@ class TeacherController extends Controller
 
     $teacher = Teacher::create($data);
 
-    $teacher->subjects()->sync($subjectIds);
+$teacher->subjects()->sync($subjectIds);
 
-    return redirect()
-        ->route('teachers.index')
-        ->with('success', 'Teacher added successfully!');
+return redirect()
+    ->route('teachers.index')
+    ->with('success', 'Teacher added successfully!');
 }
    
 

@@ -1,9 +1,7 @@
 @extends('layouts.welcome') 
 
 @section('content')
-<div class="bg-yellow-100 p-3">
-    Success Message: {{ session('success', 'Message Not Found') }}
-</div>
+
 <link rel="stylesheet"
     href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
 
@@ -13,13 +11,9 @@
         <a href="{{ route('teachers.create') }}" class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors">
             <i class="fas fa-plus mr-2"></i> Add New Teacher
         </a></div>
-
-   @if(session()->has('success'))
-    <div class="bg-green-100 border border-green-400
-                text-green-700 px-4 py-3 rounded mb-4">
-
+   @if(session('success'))
+    <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
         {{ session('success') }}
-
     </div>
 @endif
 
@@ -49,7 +43,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
-
 <script>
     $(document).ready(function(){
         $('#teachersTable').DataTable({

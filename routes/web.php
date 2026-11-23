@@ -29,11 +29,10 @@ Route::middleware(['auth', 'role:admin,student'])->group(function () {
     Route::get('/programs/data', [ProgramController::class, 'getPrograms'])->name('programs.data');
     Route::get('/programs/{id}/print', [ProgramController::class, 'printPdf'])->name('programs.print');
     Route::resource('programs', ProgramController::class);
+    Route::get('/semesters/data', [SemesterController::class, 'getSemester'])->name('semesters.data');
 
     Route::resource('semesters', SemesterController::class);
 
-    Route::get('/semester/subjects/{id}',
-    [SemesterController::class, 'getSubjects']);
 });
 
 // Admin & Teacher Routes
@@ -71,7 +70,8 @@ Route::middleware(['auth','role:admin'])->group(function(){
 });
 
 Route::middleware(['auth','role:admin'])->group(function(){
-    
+    Route::get('/enrollments/data',[EnrollmentController::class, 'getEnrollment']
+    )->name('enrollments.data');
     Route::resource('enrollments', EnrollmentController::class);
 
 });

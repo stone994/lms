@@ -10,7 +10,6 @@ use App\Models\Subject;
 use App\Models\Enrollment;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
-
 class EnrollmentController extends Controller
 {
     /**
@@ -37,16 +36,23 @@ class EnrollmentController extends Controller
                 ? asset('storage/' . $enrollment->path)
                 : null;
         })
+         ->addColumn('program', function ($enrollment) {
+            return $enrollment->program->name;
+        })
+
+        ->addColumn('student', function ($enrollment) {
+            return $enrollment->student->name;
+        })
+
+        ->addColumn('semester', function ($enrollment) {
+            return $enrollment->semester->semester_number;
+        })
         ->addColumn('subjects', function ($enrollment) {
             return $enrollment->subjects
                 ->pluck('name')
                 ->implode(', ');
         })
-        ->filterColumn('subjects', function ($query, $keyword) {
-            $query->whereHas('subjects', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%");
-            });
-        })
+        
         ->addColumn('edit', function ($enrollment) {
             return route('enrollments.edit', $enrollment->id);
         })
@@ -82,7 +88,6 @@ class EnrollmentController extends Controller
         ->route('enrollments.index')
         ->with('success', 'Enrollment created successfully.');
     }
-   
     /**
      * Display the specified resource.
      */
