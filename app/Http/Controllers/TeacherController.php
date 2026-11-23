@@ -3,70 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeacherRequest;
-use Illuminate\Http\Request;
-use App\Models\Program;
-use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\Subject;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Transliterator;
+use Yajra\DataTables\Facades\DataTables;
 
 class TeacherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
- public function index()
-{
-    $teachers = Teacher::all();
-
-    return view('teachers.index', compact('teachers'));
-}
- public function getTeacher()
-{
-    $teachers = Teacher::with('subjects')->select('teachers.*');
-
-    return DataTables::eloquent($teachers)
-        ->addColumn('image', function ($teacher) {
-            return $teacher->path
-                ? asset('storage/' . $teacher->path)
-                : null;
-        })
-        ->addColumn('subjects', function ($teacher) {
-            return $teacher->subjects
-                ->pluck('name')
-                ->implode(', ');
-        })
-        ->filterColumn('subjects', function ($query, $keyword) {
-            $query->whereHas('subjects', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%");
-            });
-        })
-        ->addColumn('edit', function ($teacher) {
-            return route('teachers.edit', $teacher->id);
-        })
-        ->addColumn('delete', function ($teacher) {
-            return route('teachers.destroy', $teacher->id);
-        })
-        ->toJson();
-}
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index()
     {
-        $subjects = Subject::all();
-        return view('teachers.create', compact('subjects'));
+        $teachers = Teacher::all();
+       return view('teachers.index', compact('teachers'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function getTeacher()
+    {
+        $teachers = Teacher::with('subjects')
+            ->select('teachers.*');
 
-public function store(TeacherRequest $request)
+        return DataTables::eloquent($teachers)
+
+            ->addColumn('image', function ($teacher) {
+                return $teacher->path
+                    ? asset('storage/' . $teacher->path)
+                    : null;
+            })
+
+            ->addColumn('subjects', function ($teacher) {
+                return $teacher->subjects
+                    ->pluck('name')
+                    ->implode(', ');
+            })
+
+            ->addColumn('edit', function ($teacher) {
+                return route('teachers.edit', $teacher->id);
+            })
+
+            ->addColumn('delete', function ($teacher) {
+                return route('teachers.destroy', $teacher->id);
+            })
+
+            ->toJson();
+    }
+
+    public function create()
+    {
+     $subjects = Subject::all();
+
+    return view('teachers.create', compact('subjects'));
+    }
+
+    public function store(TeacherRequest $request)
 {
     $data = $request->validated();
 
@@ -78,6 +67,7 @@ public function store(TeacherRequest $request)
         $data['path'] = $request->file('image')
             ->store('teachers', 'public');
     }
+
     unset($data['image']);
 
     $teacher = Teacher::create($data);
@@ -88,70 +78,58 @@ public function store(TeacherRequest $request)
         ->route('teachers.index')
         ->with('success', 'Teacher added successfully!');
 }
+   
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $teacher = Teacher::with('subjects')->findOrFail($id);
-        return view('teachers.show', compact('teacher')); 
+       
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
-    $teacher = Teacher::findOrFail($id);
-    $subjects = Subject::all();
+     $teacher = Teacher::findOrFail($id);
 
-    return view('teachers.edit', [
-        'teacher' => $teacher,
-        'subjects' => $subjects,
-    ]);
-}
-    
-   
-    /**
-     * Update the specified resource in storage.
-     */
-  public function update(TeacherRequest $request, string $id)
-{
-    $teacher = Teacher::findOrFail($id);
+        return view('teachers.edit', compact('teacher'));  
+    }
 
-    $data = $request->validated();
+    public function update(TeacherRequest $request, string $id)
+    {
+     
+         $teacher = Teacher::findOrFail($id);
 
-    $subjectIds = $data['subject_ids'] ?? [];
+        $data = $request->validated();
 
-    unset($data['subject_ids']);
+        if ($request->hasFile('image')) {
+            if ($teacher->path) {
+                Storage::disk('public')->delete($teacher->path);
+            }
 
-    if ($request->hasFile('image')) {
+            $data['path'] = $request->file('image')
+                ->store('teachers', 'public');
+        }
+
+        unset($data['image']);
+
+        $teacher->update($data);
+
+        return redirect()
+            ->route('teachers.index')
+            ->with('success', 'teacher updated successfully!');
+    }
+
+    public function destroy(string $id)
+    {
+         $teacher = Teacher::findOrFail($id);
 
         if ($teacher->path) {
             Storage::disk('public')->delete($teacher->path);
         }
 
-        $data['path'] = $request->file('image')
-            ->store('teachers', 'public');
-    }
-
-    unset($data['image']);
-
-    $teacher->update($data);
-
-    $teacher->subjects()->sync($subjectIds);
-
-    return redirect()->route('teachers.index')
-        ->with('success', 'Teacher updated successfully!');
-}
-    /**
-     * Remove the specified resource from storage.
-     */
-     public function destroy(string $id)
-    {
-        $teacher = Teacher::findOrFail($id);
         $teacher->delete();
 
-        return redirect()->route('teachers.index')->with('success', 'teacher deleted successfully.');
+        return redirect()
+            ->route('teachers.index')
+            ->with('success', 'teacher deleted successfully!');
     }
+        
 }

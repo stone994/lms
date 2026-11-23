@@ -1,6 +1,9 @@
 @extends('layouts.welcome') 
 
 @section('content')
+<div class="bg-yellow-100 p-3">
+    Success Message: {{ session('success', 'Message Not Found') }}
+</div>
 <link rel="stylesheet"
     href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
 
@@ -11,11 +14,14 @@
             <i class="fas fa-plus mr-2"></i> Add New Teacher
         </a></div>
 
-    @if(session('success'))
-        <div class="alert alert-success mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+   @if(session()->has('success'))
+    <div class="bg-green-100 border border-green-400
+                text-green-700 px-4 py-3 rounded mb-4">
+
+        {{ session('success') }}
+
+    </div>
+@endif
 
 <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
     <div class="p-0">

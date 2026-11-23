@@ -19,6 +19,7 @@ class SubjectController extends Controller
     return view('subjects.index');
 }
     public function getSubjects(){
+        
         $subjects = Subject::query();
         return DataTables::eloquent($subjects)
         ->addcolumn('edit',function($subjects){

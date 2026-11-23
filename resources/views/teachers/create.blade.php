@@ -66,11 +66,14 @@
         @forelse($subjects as $subject)
             <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
                 <input
-                    type="checkbox"
-                    name="subject_ids[]"
-                    value="{{ $subject->id }}"
-                    class="rounded text-blue-600"
-                >
+    type="checkbox"
+    name="subject_ids[]"
+    value="{{ $subject->id }}"
+    {{ in_array(
+        $subject->id,
+        old('subject_ids', [])
+    ) ? 'checked' : '' }}
+>
 
                 <span>
                     {{ $subject->name }} ({{ $subject->course }})

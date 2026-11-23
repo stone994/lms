@@ -29,7 +29,9 @@ class TeacherRequest extends FormRequest
             'department'=>'required|string|max:255',
             'education'=>'required|string|max:255',
             'image'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'subject_ids' => 'nullable|array'
+            'subject_ids' => 'nullable|array',
+
+            'subject_ids.*' => 'integer|exists:subjects,id',
         ];
     }
 }
