@@ -69,8 +69,7 @@ Route::middleware(['auth','role:admin'])->group(function(){
     Route::get('/academics/data',[AcademicController::class, 'getAcademic'])->name('academics.data');
     
     Route::resource('academics', AcademicController::class);
-      Route::get('/enrollments/data',[EnrollmentController::class, 'getEnrollment']
-    )->name('enrollments.data');
+    Route::get('/enrollments/data',[EnrollmentController::class, 'getEnrollment'])->name('enrollments.data');
     Route::resource('enrollments', EnrollmentController::class);
 
     Route::get('/teacher_subject_allocation/data',[TeacherSubjectAllocationController::class, 'getAllocate']
