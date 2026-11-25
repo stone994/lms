@@ -16,4 +16,7 @@ class Semester extends Model
         ->withPivot('subject_type')
         ->withTimestamps();
     }
+     public function teacherAllocation(){
+        return $this->hasMany(TeacherSubjectAllocation::class);
+    }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\TeacherSubjectAllocationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,7 +28,9 @@ Route::middleware('auth')->group(function () {
 // Admin & Student Routes
 Route::middleware(['auth', 'role:admin,student'])->group(function () {
     Route::get('/programs/data', [ProgramController::class, 'getPrograms'])->name('programs.data');
+
     Route::get('/programs/{id}/print', [ProgramController::class, 'printPdf'])->name('programs.print');
+
     Route::resource('programs', ProgramController::class);
     Route::get('/semesters/data', [SemesterController::class, 'getSemester'])->name('semesters.data');
 
@@ -60,20 +63,22 @@ Route::middleware(['auth', 'role:admin,teacher,student'])->group(function () {
     Route::resource('students', StudentController::class);
 
 });
-
+//just admin ky lya
 Route::middleware(['auth','role:admin'])->group(function(){
 
     Route::get('/academics/data',[AcademicController::class, 'getAcademic'])->name('academics.data');
     
     Route::resource('academics', AcademicController::class);
-
-});
-
-Route::middleware(['auth','role:admin'])->group(function(){
-    Route::get('/enrollments/data',[EnrollmentController::class, 'getEnrollment']
+      Route::get('/enrollments/data',[EnrollmentController::class, 'getEnrollment']
     )->name('enrollments.data');
     Route::resource('enrollments', EnrollmentController::class);
 
+    Route::get('/teacher_subject_allocation/data',[TeacherSubjectAllocationController::class, 'getAllocate']
+    )->name('teacher_subject_allocation.data');
+
+    Route::resource('teacher_subject_allocation',TeacherSubjectAllocationController::class);
 });
+
+
 
 require __DIR__.'/auth.php';

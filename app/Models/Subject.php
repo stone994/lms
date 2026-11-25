@@ -32,5 +32,8 @@ class Subject extends Model
         return $this->belongsToMany(Enrollment::class,'enrollment_subjects')
         ->withTimestamps();
     }
+    public function teacherAllocation(){
+        return $this->hasMany(TeacherSubjectAllocation::class);
+    }
     
 }

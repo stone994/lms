@@ -26,4 +26,7 @@ class Teacher extends Model
         'teacher_subject'
     );
     }
+    public function subjectAllocation(){
+        return $this->hasMany(TeacherSubjectAllocation::class);
+    }
 }
