@@ -41,61 +41,62 @@
 
                 
             </table>
+<<<<<<< HEAD
          {{ html()->div()->close() }}
 
     {{ html()->div()->close() }}
 
 {{ html()->div()->close() }}
+=======
+        </div>
+    </div>
+</div>
+
+>>>>>>> 860f18a24a334d84c2963f7c3f0f60d7a59242fd
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js">
-</script>
-
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
 <script>
      $(document).ready(function(){
         $('#enrollmentTable').DataTable({
             processing: true,
-        serverSide: true,
-        ajax: "{{ route('enrollments.data') }}",
-     columns: [
-    {data: 'id', name: 'id'},
-    {data: 'program', name: 'program', orderable: false,searchable: true},
-    {data: 'student', name: 'student', orderable: false,searchable: true},
-    {data: 'semester', name: 'semester', orderable: false,searchable: true},
-    { data: 'subjects', name: 'subjects', orderable: false,searchable: true },
-
-    {data: 'session', name: 'session'},
-    {data: 'status', name: 'status'},
-
-    {
-        data: 'edit',
-        name: 'edit',
-        render: function(data) {
-            return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`;
-        },
-        orderable: false,
-        searchable: false
-    },
-
-    {
-        data: 'delete',
-        name: 'delete',
-        render: function(data) {
-            return `
-                <form action="${data}" method="POST"
-                    onsubmit="return confirm('Are you sure?')">
-                    @csrf
-                    @method('DELETE')
-                    <button class="bg-red-600 text-white px-3 py-2 rounded-lg">
-                        Delete
-                    </button>
-                </form>
-            `;
-        },
-        orderable: false,
-        searchable: false
-    }
-]
+            serverSide: true,
+            ajax: "{{ route('enrollments.data') }}",
+            columns: [
+                {data: 'id'},
+                {data: 'program.name', name: 'program'},
+                {data: 'student.name', name: 'student'},
+                {data: 'semester.semester_number', name: 'semester'},
+                {data: 'subject_names', name: 'subjects', orderable: false, searchable: false},
+                {data: 'session', name: 'session'},
+                {data: 'status', name: 'status'},
+                {
+                    data: 'edit',
+                    name: 'edit',
+                    render: function(data) {
+                        return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`;
+                    },
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'delete',
+                    name: 'delete',
+                    render: function(data) {
+                        return `
+                            <form action="${data}" method="POST"
+                                onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="bg-red-600 text-white px-3 py-2 rounded-lg">
+                                    Delete
+                                </button>
+                            </form>
+                        `;
+                    },
+                    orderable: false,
+                    searchable: false
+                }
+            ]
         });
     });
 </script>
