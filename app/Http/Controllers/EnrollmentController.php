@@ -17,36 +17,19 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        $enrollments=Enrollment::with([
-             'program',
-            'student',
-            'semester',
-            'subjects'
-        ])->latest()->get();
-        return view('enrollments.index',compact('enrollments'));
+         return view('enrollments.index');
     }
 
     public function getEnrollment()
 {
-    $enrollments = Enrollment::with('subjects')->select('enrollments.*');
-
+            $enrollments = Enrollment::with(['program', 'student', 'semester', 'subjects']);
     return DataTables::eloquent($enrollments)
         ->addColumn('image', function ($enrollment) {
             return $enrollment->path
                 ? asset('storage/' . $enrollment->path)
                 : null;
         })
-         ->addColumn('program', function ($enrollment) {
-            return $enrollment->program->name;
-        })
-
-        ->addColumn('student', function ($enrollment) {
-            return $enrollment->student->name;
-        })
-
-        ->addColumn('semester', function ($enrollment) {
-            return $enrollment->semester->semester_number;
-        })
+      
         ->addColumn('subjects', function ($enrollment) {
             return $enrollment->subjects
                 ->pluck('name')
@@ -68,11 +51,11 @@ class EnrollmentController extends Controller
     public function create()
     {
         
-        $programs = Program::all();
+        $programs = Program::pluck('name','id');
     $students = Student::all();   
     $semesters = Semester::all();
     $subjects = Subject::all();
-    return view('enrollments.create',compact('programs','students','semesters','subjects'));
+    return view('enrollments.create',get_defined_vars());
     }
 
     /**
@@ -84,9 +67,7 @@ class EnrollmentController extends Controller
          $enrollment->subjects()->sync(
             $request->input('subject_ids',[])
          );
-          return redirect()
-        ->route('enrollments.index')
-        ->with('success', 'Enrollment created successfully.');
+          return redirect()->route('enrollments.index')->with('success', 'Enrollment created successfully.');
     }
     /**
      * Display the specified resource.
@@ -108,13 +89,7 @@ public function edit(string $id)
     $semesters = Semester::all();
     $subjects = Subject::all();
 
-    return view('enrollments.edit', compact(
-        'enrollment',
-        'programs',
-        'students',
-        'semesters',
-        'subjects'
-    ));
+   return view('enrollments.edit', get_defined_vars());
 }
 
     /**
@@ -130,9 +105,7 @@ public function edit(string $id)
         $request->input('subject_ids', [])
     );
 
-    return redirect()
-        ->route('enrollments.index')
-        ->with('success', 'Enrollment updated successfully.');
+            return redirect()->route('enrollments.index')->with('success', 'Enrollment updated successfully.');
 }
     
 
@@ -147,8 +120,6 @@ public function edit(string $id)
 
     $enrollment->delete();
 
-    return redirect()
-        ->route('enrollments.index')
-        ->with('success', 'Enrollment deleted successfully.');
+    return redirect()->route('enrollments.index')->with('success', 'Enrollment deleted successfully.');
 }     
 }

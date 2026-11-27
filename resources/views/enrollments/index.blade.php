@@ -4,26 +4,24 @@
 @section('content')
 <link rel="stylesheet"
     href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
-<div class="container-fluid pt-4">
+{{ html()->div()->class('container-fluid pt-4')->open() }}
 
-    <div class="flex justify-between items-center mb-3 ml-3">
+   
+        {{ html()->div()->class('flex justify-between items-center mb-3 ml-3')->open() }}
+
         <h2 class="text-2xl font-bold">Enrollment</h2>
-
-        <a href="{{ route('enrollments.create') }}"
-           class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm">
-            <i class="fas fa-plus mr-2"></i> New Enroll
-        </a>
-    </div>
+{{ html()->a(route('enrollments.create'),'New Enrollment')->class('inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm') }}
+        
+  {{html()->div()->close()}}
 
     @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
+        {{ html()->div(session('success'))
+            ->class('bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4') }}
     @endif
 
-    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+{{ html()->div()->class('bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden') }}
 
-        <div class="p-0">
+        {{ html()->div()->class('p-0')->open() }}
 
             <table id="enrollmentTable" class="w-full border-collapse border border-gray-200 mb-0">
 
@@ -43,9 +41,11 @@
 
                 
             </table>
-        </div>
-    </div>
-</div>
+         {{ html()->div()->close() }}
+
+    {{ html()->div()->close() }}
+
+{{ html()->div()->close() }}
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js">

@@ -13,22 +13,29 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'password' => Hash::make('Admin@12345'),
+                'role'=>'admin',
             ]
         );
+        $user->syncRoles(['admin']);
         $user = User::firstOrCreate(
             ['email' => 'teacher@gmail.com'],
             [
                 'name' => 'Teacher',
                 'password' => Hash::make('Teacher@12345'),
+                'role'=>'teacher',
             ]
         );
+        $user->syncRoles(['teacher']);
+
         $user = User::firstOrCreate(
             ['email' => 'student@gmail.com'],
             [
                 'name' => 'Student',
                 'password' => Hash::make('Student@12345'),
+                'role'=>'student',
             ]
         );
+        $user->syncRoles(['student']);
 
         $user->assignRole('admin');
          $user->assignRole('teacher');

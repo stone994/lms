@@ -1,133 +1,182 @@
-
 @extends('layouts.welcome')
 
 @section('content')
 
-<div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
+@php
+    $selectedSubjects = old(
+        'subject_ids',
+        $semester->subjects->pluck('id')->toArray()
+    );
+@endphp
 
-    <h2 class="text-xl font-bold mb-4">Edit Semester Scheme</h2>
+{!! html()->div()
+    ->class('w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm')
+    ->open() !!}
 
-    <form action="{{ route('semesters.update', $semester->id) }}"
-          method="POST"
-          class="space-y-4">
+    {!! html()->element('h2', 'Edit Semester Scheme')
+        ->class('text-xl font-bold mb-4') !!}
 
-        @csrf
-        @method('PUT')
+    {{-- Form --}}
+    {!! html()->form('PUT', route('semesters.update', $semester->id))
+        ->class('space-y-4')
+        ->open() !!}
 
-<div>
-    <label for="program_name" class="block text-sm font-medium text-gray-700">Program Name</label>
-    <input type="text" name="program_name" id="program_name"
-           value="{{ old('program_name', $semester->program_name) }}"
-           class="w-full border p-2 rounded-lg mt-1" required>
 
-    @error('program_name')
-        <p class="text-red-500 text-sm">{{ $message }}</p>
-    @enderror
-</div>
+        {{-- Program Name --}}
+        {!! html()->div()->open() !!}
 
-        <div>
-            <label for="semester_number"
-                   class="block text-sm font-medium text-gray-700">
-                Semester Number
-            </label>
+            {!! html()->label('Program Name', 'program_name')
+                ->class('block text-sm font-medium text-gray-700') !!}
 
-            <select name="semester_number"
-                    id="semester_number"
-                    required
-                    class="w-full border p-2 rounded-lg mt-1">
+            {!! html()->text(
+                'program_name',
+                old('program_name', $semester->program_name)
+            )
+                ->id('program_name')
+                ->required()
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
 
-                <option value="">-- Choose Semester --</option>
+            @error('program_name')
+                {!! html()->element('p', $message)
+                    ->class('text-red-500 text-sm') !!}
+            @enderror
 
-                @for($i = 1; $i <= 8; $i++)
-                    <option value="{{ $i }}"
-                        {{ old('semester_number', $semester->semester_number) == $i ? 'selected' : '' }}>
-                        Semester {{ $i }}
-                    </option>
-                @endfor
+        {!! html()->div()->close() !!}
 
-            </select>
+
+        {{-- Semester Number --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Semester Number', 'semester_number')
+                ->class('block text-sm font-medium text-gray-700') !!}
+
+            {!! html()->select(
+                'semester_number',
+                collect(range(1, 8))->mapWithKeys(function ($i) {
+                    return [$i => 'Semester ' . $i];
+                })->toArray(),
+                old('semester_number', $semester->semester_number)
+            )
+                ->id('semester_number')
+                ->placeholder('-- Choose Semester --')
+                ->required()
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
 
             @error('semester_number')
-                <p class="text-red-500 text-sm">{{ $message }}</p>
+                {!! html()->element('p', $message)
+                    ->class('text-red-500 text-sm') !!}
             @enderror
-        </div>
-<div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Select Subjects</label>
-                <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
-                    @foreach($subjects as $subject)
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                            <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}" 
-                                class="rounded text-blue-600"
-                                {{ in_array($subject->id, old('subject_ids', $semester->subjects->pluck('id')->toArray())) ? 'checked' : '' }}>
-                            <span>{{ $subject->name }} ({{ $subject->course }})</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-        <div>
-            <label for="total_subjects"
-                   class="block text-sm font-medium text-gray-700">
-                Total Subjects
-            </label>
 
-            <input type="number"
-                   name="total_subjects"
-                   id="total_subjects"
-                   value="{{ old('total_subjects', $semester->total_subjects) }}"
-                   min="0"
-                   required
-                   class="w-full border p-2 rounded-lg mt-1"
-                   placeholder="Enter total subjects">
+        {!! html()->div()->close() !!}
+
+
+        {{-- Select Subjects --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Select Subjects')
+                ->class('block text-sm font-medium text-gray-700 mb-2') !!}
+
+            {!! html()->div()
+                ->class('grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto')
+                ->open() !!}
+
+                @foreach($subjects as $subject)
+
+                    {!! html()->div()
+                        ->class('flex items-center space-x-2 text-sm text-gray-700 cursor-pointer')
+                        ->open() !!}
+
+                      {{  !! html()->checkbox(
+    'subject_ids[]',
+    in_array(
+        $subject->id,
+        old('subject_ids', $semester->subjects->pluck('id')->toArray())
+    ),
+    $subject->id
+)
+    ->id('subject_' . $subject->id)
+    ->class('rounded text-blue-600') !!}
+
+                        {!! html()->label(
+                            $subject->name . ' (' . $subject->course . ')',
+                            'subject_' . $subject->id
+                        ) !!}
+
+                    {!! html()->div()->close() !!}
+
+                @endforeach
+
+            {!! html()->div()->close() !!}
+
+        {!! html()->div()->close() !!}
+
+
+        {{-- Total Subjects --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Total Subjects', 'total_subjects')
+                ->class('block text-sm font-medium text-gray-700') !!}
+
+            {!! html()->number(
+                'total_subjects',
+                old('total_subjects', $semester->total_subjects)
+            )
+                ->id('total_subjects')
+                ->attribute('min', 0)
+                ->required()
+                ->placeholder('Enter total subjects')
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
 
             @error('total_subjects')
-                <p class="text-red-500 text-sm">{{ $message }}</p>
+                {!! html()->element('p', $message)
+                    ->class('text-red-500 text-sm') !!}
             @enderror
-        </div>
 
-         <div>
-            <label class="block mb-2 font-medium">Subject Type</label>
-            <select name="type" class="w-full border rounded-md p-2" required>
-                <option value="Compulsory"
-                    {{ old('type', $semester->type) === 'Compulsory' ? 'selected' : '' }}>
-                    Compulsory
-                </option>
-
-                <option value="Optional"
-                    {{ old('type', $semester->type) === 'Optional' ? 'selected' : '' }}>
-                    Optional
-                </option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-cyan-600">
-                Optional / Elective Subjects
-            </label>
-
-         
-
-          
-
-           
-        </div>
-
-        <div class="flex justify-end space-x-2 pt-2">
-
-            <a href="{{ route('semesters.index') }}"
-               class="px-4 py-2 bg-gray-200 rounded-lg text-sm">
-                Cancel
-            </a>
-
-            <button type="submit"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg shadow">
-                Update Semester
-            </button>
-
-        </div>
-
-    </form>
-</div>
+        {!! html()->div()->close() !!}
 
 
+        {{-- Subject Type --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Subject Type', 'type')
+                ->class('block mb-2 font-medium') !!}
+
+            {!! html()->select('type', [
+                'Compulsory' => 'Compulsory',
+                'Optional' => 'Optional'
+            ], old('type', $semester->type))
+                ->id('type')
+                ->required()
+                ->class('w-full border rounded-md p-2') !!}
+
+        {!! html()->div()->close() !!}
+
+
+        {{-- Optional / Elective Subjects --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Optional / Elective Subjects')
+                ->class('block text-sm font-medium text-cyan-600') !!}
+
+        {!! html()->div()->close() !!}
+
+
+        {{-- Buttons --}}
+        {!! html()->div()
+            ->class('flex justify-end space-x-2 pt-2')
+            ->open() !!}
+
+            {!! html()->a(route('semesters.index'), 'Cancel')
+                ->class('px-4 py-2 bg-gray-200 rounded-lg text-sm') !!}
+
+            {!! html()->submit('Update Semester')
+                ->class('bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg shadow') !!}
+
+        {!! html()->div()->close() !!}
+
+
+    {!! html()->form()->close() !!}
+
+{!! html()->div()->close() !!}
 
 @endsection

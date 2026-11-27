@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +5,6 @@
     <title>Student PDF</title>
 
     <style>
-       
         .header {
             text-align: center;
             border-bottom: 2px solid #333;
@@ -51,18 +49,29 @@
 
 <body>
 
-    <div class="header">
-        <h2>Student Information Report</h2>
-        <p>Learning Management System</p>
-    </div>
+    {{-- Header --}}
+    {!! html()->div()->class('header')->open() !!}
 
-    <div style="text-align:center;">
+        {!! html()->element('h2', 'Student Information Report') !!}
+
+        {!! html()->element('p', 'Learning Management System') !!}
+
+    {!! html()->div()->close() !!}
+
+    {{-- Student Image --}}
+    {!! html()->div()
+        ->attribute('style', 'text-align:center;')
+        ->open() !!}
+
         @if($student->path && file_exists(public_path('storage/'.$student->path)))
             <img src="{{ public_path('storage/'.$student->path) }}"
-                 class="image">
+                 class="image"
+                 alt="Student Image">
         @endif
-    </div>
 
+    {!! html()->div()->close() !!}
+
+    {{-- Student Information Table --}}
     <table>
         <tr>
             <td class="label">Student ID</td>
@@ -90,10 +99,14 @@
         </tr>
     </table>
 
-    <div class="footer">
-        <p>Learning Management System</p>
-        <p>Student Record Report</p>
-    </div>
+    {{-- Footer --}}
+    {!! html()->div()->class('footer')->open() !!}
+
+        {!! html()->element('p', 'Learning Management System') !!}
+
+        {!! html()->element('p', 'Student Record Report') !!}
+
+    {!! html()->div()->close() !!}
 
 </body>
 </html>

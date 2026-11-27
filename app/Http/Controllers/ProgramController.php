@@ -17,11 +17,11 @@ class ProgramController extends Controller
      */
     public function index()
     {
-        $programs = Program::all();
-        return view('programs.index', compact('programs'));
+        return view('programs.index');
     }
     public function getPrograms(){
         $programs = Program::query();
+
         return Datatables::eloquent($programs)
          ->addColumn('edit', function ($programs) {
                 return route('programs.edit', $programs->id);
@@ -75,9 +75,7 @@ public function store(ProgramRequest $request)
      */
     public function show(string $id)
     {
-        $program = Program::with('subjects')->findOrFail($id);
-
-        return view('programs.show', compact('program')); 
+        
     }
 
     /**
@@ -98,8 +96,11 @@ public function edit(string $id)
     public function update(ProgramRequest $request, string $id)
     {
         $program = Program::findOrFail($id);
+
         $program->update($request->validated());
+        
         $program->subjects()->sync($request->input('subject_ids', []));
+
         return redirect()->route('programs.index')->with('success', 'Program updated successfully.');
     }
 

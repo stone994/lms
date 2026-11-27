@@ -5,37 +5,43 @@
 <link rel="stylesheet"
     href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.min.css">
 
-<div class="container-fluid pt-4">
+{!! html()->div()->class('container-fluid pt-4')->open() !!}
 
-    <div class="flex justify-between items-center mb-3 ml-3">
+    {{-- Heading and Add Button --}}
+    {!! html()->div()->class('flex justify-between items-center mb-3 ml-3')->open() !!}
 
-        <h2 class="text-2xl font-bold">Student Management</h2>
+        {!! html()->element('h2', 'Student Management')
+            ->class('text-2xl font-bold') !!}
 
-        <a href="{{ route('students.create') }}"
-            class="inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors">
+        {!! html()->a(
+            route('students.create'),
+            '<i class="fas fa-plus mr-2"></i> Add New Student'
+        )->class('inline-flex items-center px-4 py-2 mr-3 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-md shadow-sm transition-colors')->attribute('style', 'text-decoration:none;') !!}
 
-            <i class="fas fa-plus mr-2"></i>
-            Add New Student
+    {!! html()->div()->close() !!}
 
-        </a>
-
-    </div>
-
+    {{-- Success Message --}}
     @if(session('success'))
-        <div class="alert alert-success mb-4">
+        {!! html()->div()
+            ->class('alert alert-success mb-4')
+            ->open() !!}
+
             {{ session('success') }}
-        </div>
+
+        {!! html()->div()->close() !!}
     @endif
 
-    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+    {{-- Table Container --}}
+    {!! html()->div()
+        ->class('bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden')
+        ->open() !!}
 
-        <div class="p-3">
+        {!! html()->div()->class('p-3')->open() !!}
 
             <table id="studentsTable"
                 class="w-full border-collapse border border-gray-200 mb-0">
 
                 <thead class="bg-gray-800 text-white">
-
                     <tr>
                         <th>ID</th>
                         <th>LMS Account</th>
@@ -47,55 +53,72 @@
                         <th>Delete</th>
                         <th>Print PDF</th>
                     </tr>
-
                 </thead>
 
             </table>
 
-        </div>
+        {!! html()->div()->close() !!}
 
-    </div>
+    {!! html()->div()->close() !!}
 
-</div>
+{!! html()->div()->close() !!}
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
 
 <script>
 
-   $(document).ready(function () {
+$(document).ready(function () {
+
     $('#studentsTable').DataTable({
+
         processing: true,
         serverSide: true,
+
         ajax: "{{ route('students.data') }}",
+
         columns: [
+
             { data: 'id', name: 'id' },
+
             { data: 'lms_account', name: 'lms_account' },
+
             { data: 'name', name: 'name' },
+
             { data: 'email', name: 'email' },
+
             { data: 'cnic', name: 'cnic' },
-            { 
-                data: 'image', 
-                name: 'path', 
+
+            {
+                data: 'image',
+                name: 'path',
+
                 render: function(data) {
-                    return data ? `<img src="${data}" class="w-16 h-16 rounded-full object-cover">` : 'No image';
+                    return data
+                        ? `<img src="${data}" class="w-16 h-16 rounded-full object-cover">`
+                        : 'No image';
                 },
-                orderable: false, 
-                searchable: false 
+
+                orderable: false,
+                searchable: false
             },
-            { 
-                data: 'edit', 
+
+            {
+                data: 'edit',
                 name: 'edit',
+
                 render: function(data) {
                     return `<a href="${data}" class="bg-slate-600 text-white px-3 py-2 rounded-lg">Edit</a>`;
                 },
-                orderable: false, 
-                searchable: false 
+
+                orderable: false,
+                searchable: false
             },
-            { 
-                data: 'delete', 
+
+            {
+                data: 'delete',
                 name: 'delete',
+
                 render: function(data) {
                     return `
                         <form action="${data}" method="POST" onsubmit="return confirm('Are you sure?')">
@@ -105,20 +128,27 @@
                         </form>
                     `;
                 },
-                orderable: false, 
-                searchable: false 
+
+                orderable: false,
+                searchable: false
             },
-            { 
-                data: 'print', 
+
+            {
+                data: 'print',
                 name: 'print',
+
                 render: function(data) {
                     return `<a href="${data}" target="_blank" class="bg-green-600 text-white px-3 py-2 rounded-lg">Print PDF</a>`;
                 },
-                orderable: false, 
-                searchable: false 
+
+                orderable: false,
+                searchable: false
             }
+
         ]
+
     });
+
 });
 
 </script>

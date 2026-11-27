@@ -19,8 +19,7 @@ class SemesterController extends Controller
      */
 public function index()
 {
-        $semesters = Semester::all();
-     return view('semesters.index', compact('semesters'));
+        return view('semesters.index');
  
 }
 public function assignSubjects(Request $request){

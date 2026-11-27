@@ -1,12 +1,12 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Program PDF</title>
 
     <style>
-       
+
         .header {
             text-align: center;
             border-bottom: 2px solid #333;
@@ -46,17 +46,26 @@
             margin-top: 30px;
             font-size: 11px;
         }
+
     </style>
+
 </head>
 
 <body>
 
-    <div class="header">
-        <h2>Student Information Report</h2>
-        <p>Learning Management System</p>
-    </div>
+    {{-- Header --}}
+    {!! html()->div()->class('header')->open() !!}
 
+        {!! html()->element('h2', 'Student Information Report') !!}
+
+        {!! html()->element('p', 'Learning Management System') !!}
+
+    {!! html()->div()->close() !!}
+
+
+    {{-- Program Information Table --}}
     <table>
+
         <tr>
             <td class="label">Program ID</td>
             <td>{{ $program->id }}</td>
@@ -76,12 +85,19 @@
             <td class="label">Duration</td>
             <td>{{ $program->duration }}</td>
         </tr>
+
     </table>
 
-    <div class="footer">
-        <p>Learning Management System</p>
-        <p>program Record Report</p>
-    </div>
+
+    {{-- Footer --}}
+    {!! html()->div()->class('footer')->open() !!}
+
+        {!! html()->element('p', 'Learning Management System') !!}
+
+        {!! html()->element('p', 'Program Record Report') !!}
+
+    {!! html()->div()->close() !!}
 
 </body>
+
 </html>

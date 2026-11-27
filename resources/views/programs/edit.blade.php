@@ -1,44 +1,108 @@
-@extends('layouts.welcome') 
+@extends('layouts.welcome')
 
 @section('content')
 
-<div class="w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm">
-    <h2 class="text-xl font-bold mb-4">Edit Program</h2>
-    <form action="{{ route('programs.update', $program->id) }}" method="POST" class="space-y-4">
-            @csrf
-            @method('PUT')
-            
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Program Name</label>
-                <input type="text" name="name" value="{{ old('name', $program->name) }}" required class="w-full border p-2 rounded-lg mt-1">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Program Code</label>
-                <input type="text" name="program_code" value="{{ old('program_code', $program->program_code) }}" required class="w-full border p-2 rounded-lg mt-1">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Duration (Years)</label>
-                <input type="number" name="duration" value="{{ old('duration', $program->duration) }}" required class="w-full border p-2 rounded-lg mt-1">
-            </div>
+@php
+    $selectedSubjects = old(
+        'subject_ids',
+        $program->subjects->pluck('id')->toArray()
+    );
+@endphp
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Select Subjects</label>
-                <div class="grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto">
-                    @foreach($subjects as $subject)
-                        <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
-                            <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}" 
-                                class="rounded text-blue-600"
-                                {{ in_array($subject->id, old('subject_ids', $program->subjects->pluck('id')->toArray())) ? 'checked' : '' }}>
-                            <span>{{ $subject->name }} ({{ $subject->course }})</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
+{!! html()->div()->class('w-full max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-sm')->open() !!}
 
-            <div class="flex justify-end space-x-2 pt-2">
-                <a href="{{ route('programs.index') }}" class="px-4 py-2 bg-gray-200 rounded-lg text-sm">Cancel</a>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">Update Program</button>
-            </div>
-    </form>
-</div>
+    {!! html()->element('h2', 'Edit Program')->class('text-xl font-bold mb-4') !!}
+
+    {!! html()->form('PUT', route('programs.update', $program->id))
+        ->class('space-y-4')
+        ->open() !!}
+
+        {{-- Program Name --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Program Name', 'name')
+                ->class('block text-sm font-medium text-gray-700') !!}
+
+            {!! html()->text('name', old('name', $program->name))
+                ->required()
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
+
+        {!! html()->div()->close() !!}
+
+        {{-- Program Code --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Program Code', 'program_code')
+                ->class('block text-sm font-medium text-gray-700') !!}
+
+            {!! html()->text('program_code', old('program_code', $program->program_code))
+                ->required()
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
+
+        {!! html()->div()->close() !!}
+
+        {{-- Duration --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Duration (Years)', 'duration')
+                ->class('block text-sm font-medium text-gray-700') !!}
+
+            {!! html()->number('duration', old('duration', $program->duration))
+                ->required()
+                ->class('w-full border p-2 rounded-lg mt-1') !!}
+
+        {!! html()->div()->close() !!}
+
+        {{-- Select Subjects --}}
+        {!! html()->div()->open() !!}
+
+            {!! html()->label('Select Subjects')
+                ->class('block text-sm font-medium text-gray-700 mb-2') !!}
+
+            {!! html()->div()
+                ->class('grid grid-cols-2 gap-2 border p-3 rounded-lg max-h-48 overflow-y-auto')
+                ->open() !!}
+
+                @foreach($subjects as $subject)
+
+                    {!! html()->div()
+                        ->class('flex items-center space-x-2 text-sm text-gray-700 cursor-pointer')
+                        ->open() !!}
+
+                        {!! html()->checkbox(
+                            'subject_ids[]',
+                            in_array($subject->id, $selectedSubjects),
+                            $subject->id
+                        )
+                            ->id('subject_' . $subject->id)
+                            ->class('rounded text-blue-600') !!}
+
+                        {!! html()->label(
+                            $subject->name . ' (' . $subject->course . ')',
+                            'subject_' . $subject->id
+                        ) !!}
+
+                    {!! html()->div()->close() !!}
+
+                @endforeach
+
+            {!! html()->div()->close() !!}
+
+        {!! html()->div()->close() !!}
+
+        {{-- Buttons --}}
+        {!! html()->div()->class('flex justify-end space-x-2 pt-2')->open() !!}
+
+            {!! html()->a(route('programs.index'), 'Cancel')
+                ->class('px-4 py-2 bg-gray-200 rounded-lg text-sm') !!}
+
+            {!! html()->submit('Update Program')
+                ->class('bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition') !!}
+
+        {!! html()->div()->close() !!}
+
+    {!! html()->form()->close() !!}
+
+{!! html()->div()->close() !!}
+
 @endsection
